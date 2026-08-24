@@ -1,0 +1,1199 @@
+<!-- projects.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Andrew Lee">
+  <meta name="description" content="Andrew Lee — Projects">
+  <title>Andrew Lee — Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+/* ============ RESET & BASE ============ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #fafaf9;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b6b6b;
+  --text-muted: #a0a0a0;
+  --border: #e8e8e8;
+  --marquee: #c0392b;
+  --marquee-glow: rgba(192,57,43,0.14);
+  --footer-h: 62px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  padding-bottom: var(--footer-h);
+}
+.display { font-family: 'Bebas Neue', 'Inter', sans-serif; letter-spacing: 0.02em; }
+img { display: block; vertical-align: top; }
+
+/* ============ SCROLL PROGRESS ============ */
+.scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--marquee); z-index: 9000; width: 0%; }
+
+/* ============ NAV ============ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.8rem 5rem;
+  transition: background 0.4s, padding 0.3s, border-color 0.4s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(250,250,249,0.92); backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px); border-bottom-color: var(--border);
+  padding: 1.1rem 5rem;
+}
+.nav-brand { font-size: 0.95rem; font-weight: 500; letter-spacing: 0.03em; color: var(--text-primary); text-decoration: none; }
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);
+  text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; position: relative;
+}
+.nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--marquee); transition: width 0.25s ease; }
+.nav-links a:hover { color: var(--text-primary); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+/* ============ HERO ============ */
+.hero {
+  position: relative; min-height: 55vh;
+  display: flex; align-items: flex-end;
+  overflow: hidden; padding: 0 6rem 5rem;
+}
+.hero-name-bg {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(7rem, 17vw, 21rem);
+  font-weight: 400; letter-spacing: 0.01em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(192,57,43,0.06);
+  white-space: nowrap; pointer-events: none; user-select: none;
+  will-change: transform, opacity; z-index: 0;
+}
+.hero-inner { position: relative; z-index: 1; width: 100%; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--marquee); margin-bottom: 1rem;
+  opacity: 0; transform: translateY(12px);
+  animation: fadeUp 0.7s 0.2s forwards;
+}
+.hero-eyebrow::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--marquee); box-shadow: 0 0 0 4px var(--marquee-glow);
+}
+.hero-title {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: clamp(4.5rem, 9vw, 8.5rem);
+  font-weight: 400; letter-spacing: 0.01em; line-height: 0.88;
+  opacity: 0; transform: translateY(28px);
+  animation: fadeUp 0.9s 0.32s forwards;
+}
+
+/* ============ PROJECTS CONTENT ============ */
+.projects-content { padding: 5rem 6rem 6rem; }
+
+.project-section { margin-bottom: 5rem; }
+.project-section:last-child { margin-bottom: 0; }
+
+.section-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2.5rem; }
+.section-label {
+  font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-muted); white-space: nowrap;
+  opacity: 0; transform: translateX(-20px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+.section-label.visible { opacity: 1; transform: translateX(0); }
+.section-rule {
+  flex: 1; height: 1px;
+  background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 11px);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.9s 0.2s ease;
+}
+.section-rule.visible { transform: scaleX(1); }
+.section-count { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.06em; white-space: nowrap; }
+
+/* ============ MARKETING SPOTLIGHT ============ */
+.spotlight-item {
+  display: flex; min-height: 560px; position: relative;
+  align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  text-decoration: none; color: inherit;
+}
+.spotlight-item::before {
+  content: ''; position: absolute; inset: 0; background: transparent;
+  transition: background 0.35s ease; pointer-events: none; z-index: 0;
+}
+.spotlight-item.hovered::before { background: rgba(192,57,43,0.025); }
+
+/* Text block — left side */
+.spotlight-body {
+  flex: 0 0 42%; max-width: 640px;
+  padding: 4rem 2rem 4rem 5rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; z-index: 1;
+}
+.spotlight-top { display: flex; flex-direction: column; gap: 1.4rem; }
+.spotlight-eyebrow { font-size: 0.66rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+.spotlight-title {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: clamp(2.2rem, 3.4vw, 3.2rem);
+  letter-spacing: 0.01em; line-height: 1.02;
+  transition: color 0.2s;
+}
+.spotlight-item.hovered .spotlight-title { color: var(--marquee); }
+.spotlight-desc { font-size: 0.88rem; font-weight: 300; color: var(--text-secondary); line-height: 1.78; max-width: 380px; }
+
+.spotlight-stats { display: flex; gap: 2rem; margin-top: 0.5rem; }
+.spotlight-stat-num { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 1.6rem; color: var(--text-primary); letter-spacing: 0.01em; }
+.spotlight-stat-label { font-size: 0.6rem; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.15rem; }
+
+.spotlight-bottom { display: flex; align-items: center; justify-content: space-between; }
+.spotlight-tag {
+  font-size: 0.68rem; font-weight: 500; letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--text-muted); padding: 0.35rem 0.9rem; border: 1px solid var(--border); border-radius: 999px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.spotlight-item.hovered .spotlight-tag { border-color: var(--marquee); color: var(--marquee); }
+.spotlight-arrow {
+  font-size: 1rem; color: var(--marquee); transform: translateX(-6px); opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.spotlight-item.hovered .spotlight-arrow { opacity: 1; transform: translateX(0); }
+
+/* Image block — right side, before/after compare */
+.spotlight-gallery {
+  flex: 5;
+  display: flex; align-items: center; justify-content: center;
+  padding: 3rem 5rem 3rem 2rem;
+  position: relative; z-index: 1;
+}
+
+.spotlight-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;   /* adds breathing room above tag/arrow */
+}
+
+.ig-compare {
+  position: relative;
+  width: 100%;
+  max-width: 1331px;
+  aspect-ratio: 1331 / 710;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 14px 38px rgba(0,0,0,0.12), 0 35px 75px rgba(0,0,0,0.10);
+}
+.ig-compare .ig-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.ig-compare .ig-after {
+  clip-path: polygon(0 0, 0% 0, 0% 100%, 0 100%);
+  transition: clip-path 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.spotlight-item.hovered .ig-compare .ig-after {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+.ig-compare .ig-tag {
+  position: absolute; top: 1rem; z-index: 3;
+  font-size: 0.66rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #fff; padding: 0.32rem 0.85rem; border-radius: 999px;
+  transition: opacity 0.3s ease;
+}
+.ig-compare .ig-tag-before { left: 1rem; background: rgba(0,0,0,0.55); opacity: 1; }
+.ig-compare .ig-tag-after { right: 1rem; background: var(--marquee); opacity: 0; }
+.spotlight-item.hovered .ig-compare .ig-tag-before { opacity: 0; }
+.spotlight-item.hovered .ig-compare .ig-tag-after { opacity: 1; }
+
+@media (max-width: 900px) {
+  .spotlight-item { flex-direction: column; min-height: auto; }
+  .spotlight-gallery { min-height: 280px; padding: 2rem 1.5rem; }
+  .spotlight-body { padding: 2.5rem 1.5rem; }
+}
+
+/* ============ CARD GRID ============ */
+.card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+.card-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+
+.card {
+  border: 1px solid var(--border); border-radius: 12px;
+  overflow: hidden; background: #fff;
+  opacity: 0; transform: translateY(50px);
+  transition: opacity 0.65s ease, transform 0.65s ease, box-shadow 0.3s ease;
+}
+.card.visible { opacity: 1; transform: translateY(0); }
+.card:hover { box-shadow: 0 24px 60px rgba(0,0,0,0.10); transform: translateY(-8px) !important; }
+.card-image-wrap { overflow: hidden; aspect-ratio: 1/1; position: relative; }
+.card-image { width: 100%; height: 100%; object-fit: cover; display: block; background: #f0f0f0; transition: transform 0.55s ease; }
+.card:hover .card-image { transform: scale(1.08); }
+.card-overlay { position: absolute; inset: 0; background: rgba(26,26,26,0); transition: background 0.3s; pointer-events: none; }
+.card:hover .card-overlay { background: transparent; }
+.card-body { padding: 1rem 1.2rem 1.25rem; border-top: 1px solid var(--border); }
+.card-title { font-size: 0.73rem; font-weight: 500; letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-primary); margin-bottom: 0.3rem; }
+.card-desc { font-size: 0.78rem; font-weight: 300; color: var(--text-secondary); line-height: 1.6; }
+
+/* Placeholder cards */
+.card.placeholder-card { border-style: dashed; background: transparent; }
+.card.placeholder-card .card-image-wrap {
+  background: repeating-linear-gradient(45deg, #f8f8f7, #f8f8f7 8px, #f3f3f2 8px, #f3f3f2 16px);
+  display: flex; align-items: center; justify-content: center;
+}
+.placeholder-inner { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 2rem; gap: 0.6rem; }
+.placeholder-dot { width: 32px; height: 32px; border-radius: 50%; border: 1.5px dashed var(--text-muted); display: flex; align-items: center; justify-content: center; }
+.placeholder-dot svg { width: 14px; height: 14px; color: var(--text-muted); }
+.placeholder-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+.card.placeholder-card:hover { box-shadow: none; transform: none !important; }
+
+/* ============ FIXED FOOTER ============ */
+footer {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 50; height: var(--footer-h); padding: 0 6rem;
+  background: rgba(250,250,249,0.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-copy { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.02em; }
+.social-icons { display: flex; align-items: center; gap: 1.5rem; }
+.social-icons a { display: flex; align-items: center; opacity: 0.4; color: var(--text-primary); transition: opacity 0.2s, transform 0.2s; }
+.social-icons a:hover { opacity: 1; transform: translateY(-2px); color: var(--marquee); }
+.social-icon-svg { width: 18px; height: 18px; }
+
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { to { opacity: 1; } }
+
+@media (max-width: 1100px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+  nav, nav.scrolled { padding: 1.2rem 1.5rem; }
+  .hero { padding: 0 1.5rem 3rem; }
+  .projects-content { padding: 3rem 1.5rem 4rem; }
+  .card-grid, .card-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+  footer { padding: 0 1.5rem; }
+}
+
+/* ============ FEATURE LIST (Operations) ============ */
+.feature-list { display: flex; flex-direction: column; padding-top: 36px; }
+
+.feature-item {
+  display: flex; min-height: 560px; position: relative; cursor: pointer;
+  border-top: 1px solid var(--border);
+  transition: border-color 0.35s ease;
+  text-decoration: none; color: inherit;
+}
+.feature-item:last-child { border-bottom: 1px solid var(--border); }
+.feature-item.hovered { border-top-color: transparent; }
+.feature-item.hovered-adjacent { border-top-color: transparent; }
+.feature-item:last-child.hovered { border-bottom-color: transparent; }
+.feature-item.flip { flex-direction: row-reverse; }
+.feature-item.flip .stack-back { left: auto; right: 8%; transform: rotate(7deg); }
+.feature-item.flip .stack-front { left: auto; right: 26%; transform: rotate(-5deg); }
+.feature-item.flip.hovered .stack-back  { transform: rotate(14deg)  translate(100px, -40px); }
+.feature-item.flip.hovered .stack-front { transform: rotate(-12deg) translate(-100px, 40px); }
+
+.feature-item::before {
+  content: ''; position: absolute; inset: 0; background: transparent;
+  transition: background 0.35s ease; pointer-events: none; z-index: 0;
+}
+.feature-item.hovered::before { background: rgba(192,57,43,0.025); }
+
+.feature-image-stack { flex: 5; position: relative; overflow: visible; z-index: 1; }
+
+.stack-img {
+  position: absolute; width: 50%; height: auto; object-fit: cover; border-radius: 0px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06), 0 8px 22px rgba(0,0,0,0.10), 0 22px 55px rgba(0,0,0,0.10);
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.7s ease;
+}
+.stack-back { top: 0; left: 8%; transform: rotate(-7deg); z-index: 1; }
+.stack-front { top: 5%; left: 26%; transform: rotate(5deg); z-index: 1; }
+
+.feature-item.hovered .stack-back {
+  transform: rotate(-14deg) translate(-100px, -40px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 14px 38px rgba(0,0,0,0.12), 0 35px 75px rgba(0,0,0,0.12);
+}
+.feature-item.hovered .stack-front {
+  transform: rotate(12deg) translate(100px, 40px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 14px 38px rgba(0,0,0,0.13), 0 35px 75px rgba(0,0,0,0.13);
+}
+
+/* Amazon Operations logo — no tilt, no stack shadow */
+.amazon-logo {
+  top: 5%; left: 26%;
+  transform: none !important;
+}
+.feature-item.hovered .amazon-logo {
+  transform: none !important;
+}
+.amazon-gif {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%; height: auto;
+  border-radius: 16px;
+  box-shadow: none;
+}
+.feature-item.hovered .amazon-gif {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.feature-body {
+  flex: 0 0 42%; max-width: 640px; padding: 4rem 3rem;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; z-index: 1;
+}
+.feature-top { display: flex; flex-direction: column; gap: 1.4rem; }
+.feature-index { font-size: 0.66rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+.feature-title {
+  font-family: 'Bebas Neue', 'Inter', sans-serif;
+  font-size: clamp(2.2rem, 3.4vw, 3.2rem);
+  letter-spacing: 0.01em; line-height: 1.02;
+  transition: color 0.2s;
+}
+.feature-item.hovered .feature-title { color: var(--marquee); }
+.feature-desc { font-size: 0.88rem; font-weight: 300; color: var(--text-secondary); line-height: 1.78; max-width: 360px; }
+.feature-bottom { display: flex; align-items: center; justify-content: space-between; }
+.feature-tag {
+  font-size: 0.68rem; font-weight: 500; letter-spacing: 0.10em; text-transform: uppercase;
+  color: var(--text-muted); padding: 0.35rem 0.9rem; border: 1px solid var(--border); border-radius: 999px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.feature-item.hovered .feature-tag { border-color: var(--marquee); color: var(--marquee); }
+.feature-arrow {
+  font-size: 1rem; color: var(--marquee); transform: translateX(-6px); opacity: 0;
+  transition: opacity 0.25s, transform 0.25s;
+}
+.feature-item.hovered .feature-arrow { opacity: 1; transform: translateX(0); }
+
+/* ============ UI/UX SHOWCASE ============ */
+.uiux-showcase { position: relative; display: flex; align-items: flex-start; justify-content: center; gap: 7rem; padding: 4rem 0 5rem; overflow: hidden; }
+.uiux-bg-text {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(6rem, 18vw, 16rem); font-weight: 400; letter-spacing: 0.01em;
+  color: transparent; -webkit-text-stroke: 1px rgba(192,57,43,0.05);
+  white-space: nowrap; pointer-events: none; user-select: none; z-index: 0;
+}
+.phone-feature {
+  display: flex; flex-direction: column; align-items: center; gap: 2.4rem;
+  position: relative; z-index: 1; opacity: 0;
+  text-decoration: none; color: inherit;
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.phone-feature.phone-left { transform: translateX(-50px); margin-top: 0; }
+.phone-feature.phone-right { transform: translateX(50px); margin-top: 5rem; }
+.phone-feature.visible { opacity: 1; transform: translateX(0) !important; }
+
+.phone-wrap { transition: transform 0.65s cubic-bezier(0.23, 1, 0.32, 1); position: relative; }
+.phone-feature.phone-left .phone-wrap { transform: rotate(-5deg); }
+.phone-feature.phone-right .phone-wrap { transform: rotate(5deg); }
+.phone-feature:hover .phone-wrap { transform: rotate(0deg) translateY(-16px) !important; }
+
+.phone-mockup {
+  position: relative; width: 240px; height: 521px; border-radius: 44px;
+  border: 6px solid #1a1a1a; background: #0a0a0a; overflow: hidden;
+  transform: translateZ(0); -webkit-transform: translateZ(0);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.18), 0 50px 100px rgba(0,0,0,0.12);
+  transition: box-shadow 0.6s ease;
+}
+.phone-mockup::before {
+  content: ''; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 60.5px; height: 17.6px; background: #000; border-radius: 20px; z-index: 10;
+}
+.phone-mockup::after {
+  content: ''; position: absolute; top: 100px; right: -9px;
+  width: 3px; height: 55px; background: #1a1a1a; border-radius: 0 4px 4px 0;
+}
+.phone-vol { position: absolute; left: -9px; top: 90px; width: 3px; height: 30px; background: #1a1a1a; border-radius: 4px 0 0 4px; z-index: 10; }
+.phone-vol::before { content: ''; position: absolute; top: 44px; left: 0; width: 3px; height: 30px; background: #1a1a1a; border-radius: 4px 0 0 4px; }
+.phone-screen { position: absolute; inset: -1px; overflow: hidden; background: #0a0a0a; }
+.phone-screen img { width: 100%; height: 100%; object-fit: fill; display: block; }
+.phone-home-bar { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: rgba(255,255,255,0.35); border-radius: 3px; z-index: 10; }
+
+.phone-info {
+  text-align: center; display: flex; flex-direction: column; gap: 0.65rem;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s 0.35s ease, transform 0.6s 0.35s ease;
+}
+.phone-feature.visible .phone-info { opacity: 1; transform: translateY(0); }
+.phone-index { font-size: 0.66rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+.phone-title { font-family: 'Bebas Neue', 'Inter', sans-serif; font-size: 1.9rem; letter-spacing: 0.01em; color: var(--text-primary); transition: color 0.2s; }
+.phone-feature:hover .phone-title { color: var(--marquee); }
+.phone-desc { font-size: 0.84rem; font-weight: 300; color: var(--text-secondary); max-width: 210px; margin: 0 auto; line-height: 1.75; }
+.phone-tag {
+  display: inline-block; align-self: center; font-size: 0.68rem; font-weight: 500;
+  letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-muted);
+  padding: 0.32rem 0.9rem; border: 1px solid var(--border); border-radius: 999px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.phone-feature:hover .phone-tag { border-color: var(--marquee); color: var(--marquee); }
+
+/* ============ LIGHTBOX ============ */
+.lightbox-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  align-items: center; justify-content: center; cursor: zoom-out;
+}
+.lightbox-overlay.active { display: flex; }
+.lightbox-img {
+  max-width: 88vw; max-height: 88vh; width: auto; margin: 0;
+  border-radius: 12px; box-shadow: 0 32px 80px rgba(0,0,0,0.45);
+  animation: lbPop 0.25s cubic-bezier(0.23, 1, 0.32, 1) forwards; cursor: default;
+}
+.lightbox-close {
+  position: absolute; top: 1.5rem; right: 1.8rem; font-size: 1.6rem; color: #fff; cursor: pointer;
+  opacity: 0.7; transition: opacity 0.2s, transform 0.2s; background: none; border: none; line-height: 1;
+}
+.lightbox-close:hover { opacity: 1; transform: scale(1.15); }
+@keyframes lbPop { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
+</style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <nav id="mainNav">
+    <a class="nav-brand" href="index.html">Andrew Lee</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="aboutme.html">About</a></li>
+      <li><a href="projects.html" class="active">Projects</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-name-bg" id="heroNameBg">PROJECTS</div>
+    <div class="hero-inner">
+      <span class="hero-eyebrow">The Lineup</span>
+      <h1 class="hero-title">Projects.</h1>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+<div class="projects-content">
+
+  <!-- MARKETING -->
+  <div class="project-section">
+    <div class="section-header" data-obs>
+      <span class="section-label">Marketing</span>
+      <div class="section-rule"></div>
+      <span class="section-count">3 works</span>
+    </div>
+
+    <a  class="spotlight-item" id="spotlightItem">
+  <!-- Left: Text Content -->
+  <div class="spotlight-body">
+    <div class="spotlight-top">
+      <span class="spotlight-eyebrow">Instagram Feed</span>
+      <h3 class="spotlight-title">The Rebrand,<br>In Motion</h3>
+      <p class="spotlight-desc">A visual comparison showing the evolution of our social media aesthetic from the old feed to the new branding — hover to reveal the transformation.</p>
+
+      <div class="spotlight-stats">
+        <div>
+          <div class="spotlight-stat-num">+38%</div>
+          <div class="spotlight-stat-label">Follower Growth (1wk)</div>
+        </div>
+        <div>
+          <div class="spotlight-stat-num">90%+</div>
+          <div class="spotlight-stat-label">Engagement Increase</div>
+        </div>
+        <div>
+          <div class="spotlight-stat-num">50+</div>
+          <div class="spotlight-stat-label">Graphics Produced</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spotlight-bottom">
+      <span class="spotlight-tag">Hover to compare</span>
+      <span class="spotlight-arrow">→</span>
+    </div>
+  </div>
+
+  <!-- Right: Image Comparison -->
+  <div class="spotlight-gallery">
+    <div class="ig-compare">
+      <img src="maiss_feed_before.png" class="ig-img ig-before" alt="MAISS Instagram feed before rebrand">
+      <img src="maiss_feed_after.png" class="ig-img ig-after" alt="MAISS Instagram feed after rebrand">
+      <span class="ig-tag ig-tag-before">Before</span>
+      <span class="ig-tag ig-tag-after">After</span>
+    </div>
+  </div>
+</a>
+  </div>
+
+  <!-- OPERATIONS -->
+  <div class="project-section">
+    <div class="section-header" data-obs>
+      <span class="section-label">Operations</span>
+      <div class="section-rule"></div>
+      <span class="section-count">3 works</span>
+    </div>
+
+    <div class="feature-list">
+
+      <a href="screen-on-the-green.html" class="feature-item">
+        <div class="feature-image-stack">
+          <img src="sotg_crowd.JPG" class="stack-img stack-front" alt="SOTG 2">
+          <img src="sotg_spider.png" class="stack-img stack-back" style="z-index: 3;" alt="Screen on the Green">
+        </div>
+        <div class="feature-body">
+          <div class="feature-top">
+            <h3 class="feature-title">Screen on<br>the Green</h3>
+            <p class="feature-desc">
+              Semi-annual outdoor movie screening held at UCI. Coordinated logistics,
+              vendor management, and on-site operations to bring the campus community together.
+            </p>
+          </div>
+          <div class="feature-bottom">
+            <span class="feature-tag">Event Operations</span>
+            <span class="feature-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="feature-item flip">
+        <div class="feature-image-stack">
+          <img src="APADphoto.jpeg" class="stack-img stack-back" alt="APAD 2">
+          <img src="apadflyer.png" class="stack-img stack-front" alt="Aldrich Park After Dark">
+        </div>
+        <div class="feature-body">
+          <div class="feature-top">
+            <h3 class="feature-title">Aldrich Park After Dark/<br>Summerlands</h3>
+            <p class="feature-desc">
+              Semi-annual live concert series set in Aldrich Park. Managed event planning,
+              stakeholder coordination, and day-of production for the Summerlands showcase.
+            </p>
+          </div>
+          <div class="feature-bottom">
+            <span class="feature-tag">Event Operations</span>
+            <span class="feature-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="feature-item">
+        <div class="feature-image-stack">
+          <img src="amazon_dark_logo.gif" class="amazon-gif" alt="Amazon Operations animated">
+        </div>
+        <div class="feature-body">
+          <div class="feature-top">
+            <h3 class="feature-title">Amazon<br>Operations</h3>
+            <p class="feature-desc">
+              8-week process improvement project across Manual Palletize, Robotics, and
+              Outbound Dock at an Amazon fulfillment facility, from floor observation to measurable results.
+            </p>
+          </div>
+          <div class="feature-bottom">
+            <span class="feature-tag">Process Improvement</span>
+            <span class="feature-arrow">→</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+    <!-- UI/UX -->
+    <div class="project-section">
+      <div class="section-header" data-obs>
+        <span class="section-label">UI / UX</span>
+        <div class="section-rule"></div>
+        <span class="section-count">2 works</span>
+      </div>
+
+      <div class="uiux-showcase">
+        <div class="uiux-bg-text">DESIGN</div>
+
+        <a class="phone-feature phone-left" data-phone>
+          <div class="phone-wrap">
+            <div class="phone-mockup">
+              <div class="phone-vol"></div>
+              <div class="phone-screen">
+                <img src="shoppyistHOME.jpg" alt="App 1">
+              </div>
+            </div>
+          </div>
+          <div class="phone-info">
+            <h3 class="phone-title">Shoppyist</h3>
+            <p class="phone-desc">Shop Your Values.</p>
+            <span class="phone-tag">Mobile Design</span>
+          </div>
+        </a>
+
+        <div class="phone-feature phone-right" data-phone>
+          <div class="phone-wrap">
+            <div class="phone-mockup">
+              <div class="phone-vol"></div>
+              <div class="phone-screen">
+                <img src="pricelyHOME.png" alt="App 2">
+              </div>
+            </div>
+          </div>
+          <div class="phone-info">
+            <h3 class="phone-title">Pricely</h3>
+            <p class="phone-desc">Priced for a Budget.</p>
+            <span class="phone-tag">Mobile Design</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- GRAPHIC DESIGN -->
+    <div class="project-section">
+      <div class="section-header" data-obs>
+        <span class="section-label">Graphic Design</span>
+        <div class="section-rule"></div>
+      </div>
+      <div class="card-grid">
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="sotg_pib.png" alt="SOTG Flyer" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="MascotBlankBG.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Icon</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="spidey_pib.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Icon</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="ciwm_chart.png" alt="CIWM Icon" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Icon</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="ciwm_piggy.png" alt="CIWM Icon" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Icon</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="lifevest_couch.png" alt="CIWM Icon" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Icon</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="lifevest_peter.png" alt="CIWM Icon" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Icon</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="ciwm_sticker_yellow.png" alt="CIWM Sticker" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Sticker Sheet</div>
+            <p class="card-desc">Formed with Adobe Illustrator.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="ciwm_sticker_lifevest.png" alt="CIWM Sticker" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Sticker Sheet</div>
+            <p class="card-desc">Formed with Adobe Illustrator.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="La_La_Land_Cutout 3.png" alt="SOTG Flyer" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Print</div>
+            <p class="card-desc">Drawn with Procreate.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="maiss_bonfirebash.png" alt="MAISS Bonfire Bash" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="maiss_bowling.png" alt="MAISS Bowling" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="0">
+          <div class="card-image-wrap">
+            <img src="MAISSKICKOFFnew.png" alt="MAISS Kickoff" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="110">
+          <div class="card-image-wrap">
+            <img src="Mentorapp.png" alt="MAISS Mentorship" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="caden + devon.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="220">
+          <div class="card-image-wrap">
+            <img src="FAANGFOCUS.png" alt="MAISS FAANG Focus" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="220">
+          <div class="card-image-wrap">
+            <img src="fundraiser.png" alt="MAISS FAANG Focus" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="AIF.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="recruitment readiness.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="Google Company Tour.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="slime n chime.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="study hour.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="JEOPARDY.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="3rd party service.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="startup.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="Recruitment.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="figma frenzy.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="internapp.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="internapp 2.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="EOQ social.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="week3recap.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="SSVPapplication1.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="SSVPapplication2.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Figma.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="2024-Clayton State LIFEvest Flyer.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Canva.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="The Merc and the Mutant-2.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Canva.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="Raising Resumes-2.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Canva.</p>
+          </div>
+        </div>
+
+        <div class="card" data-delay="330">
+          <div class="card-image-wrap">
+            <img src="Chills & Thrills.png" alt="Anteater Involvement Fair" class="card-image">
+            <div class="card-overlay"></div>
+          </div>
+          <div class="card-body">
+            <div class="card-title">Flyer</div>
+            <p class="card-desc">Designed with Canva.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span class="footer-copy">© 2026 Andrew Lee</span>
+    <div class="social-icons">
+      <a href="https://www.linkedin.com/in/andrewlee6804/" target="_blank" title="LinkedIn">
+        <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+      <a href="mailto:lee.andrew6804@gmail.com" title="Email">
+        <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.48.21-.913.54-1.21L12 13.09 23.46 4.247c.33.297.54.73.54 1.21z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const progressBar = document.getElementById('scrollProgress');
+    const nav = document.getElementById('mainNav');
+    const heroBg = document.getElementById('heroNameBg');
+    const heroSection = document.getElementById('hero');
+
+    window.addEventListener('scroll', () => {
+      const sy = window.scrollY;
+      const dh = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (sy / dh * 100) + '%';
+      nav.classList.toggle('scrolled', sy > 60);
+      const heroH = heroSection.offsetHeight;
+      const p = Math.min(sy / heroH, 1);
+      heroBg.style.transform = `translate(-50%, -50%) scale(${1 + p * 4})`;
+      heroBg.style.opacity = String(Math.max(0, 0.05 - p * 0.05));
+    }, { passive: true });
+
+    // Section headers reveal
+    document.querySelectorAll('.section-header[data-obs]').forEach(header => {
+      new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.querySelector('.section-label').classList.add('visible');
+            e.target.querySelector('.section-rule').classList.add('visible');
+          }
+        });
+      }, { threshold: 0.3 }).observe(header);
+    });
+
+    // Card stagger reveal
+    const cardObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), parseInt(e.target.dataset.delay) || 0);
+          cardObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.card:not(.placeholder-card)').forEach(c => cardObs.observe(c));
+
+    // Placeholder cards reveal too
+    const phObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), parseInt(e.target.dataset.delay) || 0);
+          phObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.card.placeholder-card').forEach(c => phObs.observe(c));
+
+    // Phone reveal on scroll
+    const phoneObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          phoneObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('[data-phone]').forEach((p, i) => {
+      p.style.transitionDelay = (i * 0.15) + 's';
+      phoneObs.observe(p);
+    });
+
+    // Operations feature-item hover
+    document.querySelectorAll('.feature-item').forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        item.classList.add('hovered');
+        const next = item.nextElementSibling;
+        if (next?.classList.contains('feature-item')) next.classList.add('hovered-adjacent');
+      });
+      item.addEventListener('mouseleave', () => {
+        item.classList.remove('hovered');
+        const next = item.nextElementSibling;
+        if (next?.classList.contains('feature-item')) next.classList.remove('hovered-adjacent');
+      });
+    });
+
+    // Marketing spotlight hover
+    const spotlight = document.getElementById('spotlightItem');
+    if (spotlight) {
+      spotlight.addEventListener('mouseenter', () => spotlight.classList.add('hovered'));
+      spotlight.addEventListener('mouseleave', () => spotlight.classList.remove('hovered'));
+    }
+  </script>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox-overlay" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  </div>
+
+  <script>
+    const lightbox      = document.getElementById('lightbox');
+    const lightboxImg   = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('.card-image-wrap').forEach(wrap => {
+      const img = wrap.querySelector('.card-image');
+      wrap.style.cursor = 'zoom-in';
+      wrap.addEventListener('click', e => {
+        e.stopPropagation();
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    lightbox.addEventListener('click', () => closeLightbox());
+    lightboxClose.addEventListener('click', () => closeLightbox());
+    lightboxImg.addEventListener('click', e => e.stopPropagation());
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  </script>
+</body>
+</html>

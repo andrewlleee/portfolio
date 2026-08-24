@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Aldrich Park After Dark | Andrew Lee</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#fafaf9;--text-primary:#1a1a1a;--text-secondary:#6b6b6b;--text-muted:#a0a0a0;--border:#e8e8e8;--footer-h:62px;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;padding-bottom:var(--footer-h);}
+p,h1,h2,h3{font-family:'Inter',sans-serif;text-align:left;font-style:normal;}
+img{margin:0;max-width:none;display:block;}
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--text-primary);z-index:9000;width:0%;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.8rem 5rem;transition:background 0.4s,padding 0.3s,border-color 0.4s;border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(250,250,249,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom-color:var(--border);padding:1.1rem 5rem;}
+.nav-brand{font-size:0.95rem;font-weight:500;letter-spacing:0.03em;color:var(--text-primary);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:0.82rem;font-weight:400;color:var(--text-secondary);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--text-primary);transition:width 0.25s ease;}
+.nav-links a:hover{color:var(--text-primary);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.hero{position:relative;min-height:55vh;display:flex;align-items:flex-end;overflow:hidden;padding:0 6rem 5rem;}
+.hero-name-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:clamp(5rem,14vw,18rem);font-weight:900;letter-spacing:-0.04em;color:transparent;-webkit-text-stroke:1px rgba(26,26,26,0.05);white-space:nowrap;pointer-events:none;user-select:none;z-index:0;}
+.hero-inner{position:relative;z-index:1;width:100%;}
+.hero-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.6s 0.1s forwards;transition:color 0.2s;}
+.hero-back:hover{color:var(--text-primary);}
+.hero-eyebrow{display:block;font-size:0.68rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1rem;opacity:0;animation:fadeUp 0.7s 0.2s forwards;}
+.hero-title{font-size:clamp(3.5rem,7vw,7rem);font-weight:800;letter-spacing:-0.04em;line-height:0.92;opacity:0;animation:fadeUp 0.9s 0.32s forwards;}
+.meta-strip{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0 6rem;opacity:0;animation:fadeUp 0.7s 0.5s forwards;}
+.meta-item{flex:1;padding:1.5rem 2rem;border-right:1px solid var(--border);}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:0.62rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem;}
+.meta-value{font-size:0.92rem;font-weight:500;color:var(--text-primary);}
+.project-content{padding:5rem 6rem 6rem;}
+.content-section{margin-bottom:6rem;}
+.section-label-row{display:flex;align-items:center;gap:1.5rem;margin-bottom:3rem;}
+.section-label{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;}
+.section-rule{flex:1;height:1px;background:var(--border);}
+.split-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.split-layout.reverse{direction:rtl;}
+.split-layout.reverse>*{direction:ltr;}
+.content-heading{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:-0.03em;line-height:1.1;margin-bottom:1.5rem;color:var(--text-primary);}
+.content-body{font-size:0.92rem;font-weight:300;color:var(--text-secondary);line-height:1.85;margin-bottom:1.5rem;font-style:normal;}
+.content-tags{display:flex;gap:0.5rem;flex-wrap:wrap;}
+.content-tag{font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);padding:0.3rem 0.8rem;border:1px solid var(--border);border-radius:999px;}
+.content-image{width:100%;border-radius:12px;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,0.07);max-width:none;background:#f0f0f0;min-height:280px;object-fit:cover;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:6rem;}
+.stat-cell{background:#fff;padding:2.5rem;display:flex;flex-direction:column;gap:0.5rem;}
+.stat-num{font-size:clamp(2.5rem,5vw,4rem);font-weight:900;letter-spacing:-0.04em;line-height:1;}
+.stat-label{font-size:0.7rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);}
+.image-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;}
+.image-grid img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;border:1px solid var(--border);box-shadow:0 4px 16px rgba(0,0,0,0.06);background:#f0f0f0;}
+.next-project{margin-top:6rem;padding-top:3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.next-label{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);}
+.next-title{font-size:1.8rem;font-weight:700;letter-spacing:-0.03em;margin-top:0.5rem;color:var(--text-primary);transition:color 0.2s;}
+.next-link{text-decoration:none;display:block;}
+.next-link:hover .next-title{color:#000;}
+.next-arrow{font-size:2rem;color:var(--text-muted);transition:transform 0.25s,color 0.25s;}
+.next-link:hover .next-arrow{transform:translateX(6px);color:var(--text-primary);}
+footer{position:fixed;bottom:0;left:0;right:0;z-index:50;height:var(--footer-h);padding:0 6rem;background:rgba(250,250,249,0.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.footer-copy{font-size:0.75rem;color:var(--text-muted);letter-spacing:0.02em;}
+.social-icons{display:flex;align-items:center;gap:1.5rem;}
+.social-icons a{display:flex;align-items:center;opacity:0.4;color:var(--text-primary);transition:opacity 0.2s,transform 0.2s;}
+.social-icons a:hover{opacity:1;transform:translateY(-2px);}
+.social-icon-svg{width:18px;height:18px;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+@media(max-width:768px){nav,nav.scrolled{padding:1.2rem 1.5rem;}.hero{padding:0 1.5rem 3rem;}.meta-strip{margin:0 1.5rem;flex-wrap:wrap;}.meta-item{min-width:50%;border-right:none;border-bottom:1px solid var(--border);}.project-content{padding:3rem 1.5rem 4rem;}.split-layout{grid-template-columns:1fr;gap:2rem;}.split-layout.reverse{direction:ltr;}.stat-row{grid-template-columns:1fr;}footer{padding:0 1.5rem;}}
+</style>
+</head>
+<body>
+<div class="scroll-progress" id="scrollProgress"></div>
+<nav id="mainNav">
+  <a class="nav-brand" href="index.html">Andrew Lee</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="aboutme.html">About</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+  </ul>
+</nav>
+<section class="hero" id="hero">
+  <div class="hero-name-bg">APAD</div>
+  <div class="hero-inner">
+    <a href="projects.html" class="hero-back">← Projects</a>
+    <span class="hero-eyebrow">Operations — 02</span>
+    <h1 class="hero-title">Aldrich Park<br>After Dark.</h1>
+  </div>
+</section>
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">Chief of Staff, Multimedia Commissioner</div></div>
+  <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">Event Operations</div></div>
+  <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">Live Concert Series</div></div>
+  <div class="meta-item"><div class="meta-label">Year</div><div class="meta-value">2024 – 2025</div></div>
+</div>
+<div class="project-content">
+
+  <!-- OVERVIEW -->
+  <div class="content-section">
+    <div class="section-label-row"><span class="section-label">Overview</span><div class="section-rule"></div></div>
+    <div class="split-layout">
+      <div>
+        <h2 class="content-heading">A live concert in the heart of campus.</h2>
+        <p class="content-body">Aldrich Park After Dark is a semi-annual live concert series set in UCI's iconic Aldrich Park. As Chief of Staff, I directly oversaw full-cycle planning and execution for the event, including artist logistics for performers San Pacho and JID — managing two commissioners and four interns to deliver a high-energy experience for the campus community, all while running concurrently with UCI's Screen on the Green during Welcome Week.</p>
+        <div class="content-tags">
+          <span class="content-tag">Event Operations</span>
+          <span class="content-tag">Production</span>
+        </div>
+      </div>
+      <img src="APADphoto.jpeg" alt="Aldrich Park After Dark" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-row">
+    <div class="stat-cell"><span class="stat-num">$266K</span><span class="stat-label">Budget</span></div>
+    <div class="stat-cell"><span class="stat-num">2</span><span class="stat-label">Headlining Artists</span></div>
+    <div class="stat-cell"><span class="stat-num">6</span><span class="stat-label">Team Members Managed</span></div>
+  </div>
+
+  <!-- CONTEXT -->
+  <div class="content-section">
+    <div class="section-label-row"><span class="section-label">Context</span><div class="section-rule"></div></div>
+    <div class="split-layout">
+      <div>
+        <h2 class="content-heading">Two flagship events, one Welcome Week.</h2>
+        <p class="content-body">As Chief of Staff, I was responsible for UCI's largest Welcome Week programming — which meant planning and executing Aldrich Park After Dark and Screen on the Green concurrently, not sequentially. That meant two separate vendor timelines, two production crews, and two sets of artist or licensing logistics, all converging in the same few weeks with no room for either event to slip.</p>
+        <div class="content-tags">
+          <span class="content-tag">Concurrent Planning</span>
+          <span class="content-tag">Cross-Team Coordination</span>
+        </div>
+      </div>
+      <img src="apadflyer.png" alt="APAD Flyer" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- EXECUTION -->
+  <div class="content-section">
+    <div class="section-label-row"><span class="section-label">Execution</span><div class="section-rule"></div></div>
+    <div class="split-layout reverse">
+      <div>
+        <h2 class="content-heading">From negotiation to night-of.</h2>
+        <p class="content-body">I led negotiations to bring San Pacho and JID's performance costs within a $266K budget, then managed two commissioners and four interns across pre-event logistics, promotional oversight, stage and sound setup, and staffing coordination. On the night of the show, that meant being the point person for real-time problem-solving — the kind of on-the-ground judgment calls that don't show up in a planning doc but decide whether a concert actually runs on time.</p>
+        <div class="content-tags">
+          <span class="content-tag">Artist Negotiation</span>
+          <span class="content-tag">Live Production</span>
+        </div>
+      </div>
+      <img src="APADphoto.jpeg" alt="Aldrich Park After Dark" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- OUTCOME -->
+  <div class="content-section">
+    <div class="section-label-row"><span class="section-label">Outcome</span><div class="section-rule"></div></div>
+    <div class="split-layout">
+      <div>
+        <h2 class="content-heading">The smoothest execution yet.</h2>
+        <p class="content-body">Both events ran on schedule and within budget, and the concurrent Welcome Week programming was recognized by ProStaff as the smoothest execution in the office's history — a direct result of running two full-scale productions in parallel without either one absorbing the other's problems.</p>
+        <div class="content-tags">
+          <span class="content-tag">ProStaff Recognition</span>
+          <span class="content-tag">On-Budget Delivery</span>
+        </div>
+      </div>
+      <img src="apadflyer.png" alt="APAD Flyer" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="content-section">
+    <div class="section-label-row"><span class="section-label">Event Gallery</span><div class="section-rule"></div></div>
+    <div class="image-grid">
+      <img src="APADphoto.jpeg" alt="APAD Photo"/>
+      <img src="apadflyer.png" alt="APAD Flyer"/>
+    </div>
+  </div>
+
+  <a href="shoppyist.html" class="next-link">
+    <div class="next-project">
+      <div><div class="next-label">Next Project</div><div class="next-title">Shoppyist</div></div>
+      <span class="next-arrow">→</span>
+    </div>
+  </a>
+</div>
+<footer>
+  <span class="footer-copy">© 2026 Andrew Lee</span>
+  <div class="social-icons">
+    <a href="https://www.linkedin.com/in/andrewlee6804/" target="_blank" title="LinkedIn">
+      <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="mailto:lee.andrew6804@gmail.com" title="Email">
+      <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.48.21-.913.54-1.21L12 13.09 23.46 4.247c.33.297.54.73.54 1.21z"/></svg>
+    </a>
+  </div>
+</footer>
+<script>
+const progressBar=document.getElementById('scrollProgress');
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{
+  const sy=window.scrollY;
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  progressBar.style.width=(sy/dh*100)+'%';
+  nav.classList.toggle('scrolled',sy>60);
+},{passive:true});
+</script>
+</body>
+</html>

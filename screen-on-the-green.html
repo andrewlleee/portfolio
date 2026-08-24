@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Screen on the Green | Andrew Lee</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#fafaf9;
+  --text-primary:#1a1a1a;
+  --text-secondary:#6b6b6b;
+  --text-muted:#a0a0a0;
+  --border:#e8e8e8;
+  --marquee:#c0392b;
+  --marquee-glow:rgba(192,57,43,0.14);
+  --footer-h:62px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text-primary);overflow-x:hidden;padding-bottom:var(--footer-h);}
+p,h1,h2,h3{font-family:'Inter',sans-serif;text-align:left;font-style:normal;}
+.display{font-family:'Bebas Neue','Inter',sans-serif;letter-spacing:0.02em;}
+img{margin:0;max-width:none;display:block;}
+
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:var(--marquee);z-index:9000;width:0%;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.8rem 5rem;transition:background 0.4s,padding 0.3s,border-color 0.4s;border-bottom:1px solid transparent;}
+nav.scrolled{background:rgba(250,250,249,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom-color:var(--border);padding:1.1rem 5rem;}
+.nav-brand{font-size:0.95rem;font-weight:500;letter-spacing:0.03em;color:var(--text-primary);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;}
+.nav-links a{font-size:0.82rem;font-weight:400;color:var(--text-secondary);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--marquee);transition:width 0.25s ease;}
+.nav-links a:hover{color:var(--text-primary);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+
+.hero{position:relative;min-height:55vh;display:flex;align-items:flex-end;overflow:hidden;padding:0 6rem 5rem;}
+.hero-name-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,18rem);font-weight:400;letter-spacing:0.01em;color:transparent;-webkit-text-stroke:1px rgba(192,57,43,0.06);white-space:nowrap;pointer-events:none;user-select:none;z-index:0;}
+.hero-inner{position:relative;z-index:1;width:100%;}
+.hero-back{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-bottom:1.5rem;opacity:0;animation:fadeUp 0.6s 0.1s forwards;transition:color 0.2s;}
+.hero-back:hover{color:var(--marquee);}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.68rem;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--marquee);margin-bottom:1rem;opacity:0;animation:fadeUp 0.7s 0.2s forwards;}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--marquee);box-shadow:0 0 0 4px var(--marquee-glow);}
+.hero-title{font-family:'Bebas Neue','Inter',sans-serif;font-size:clamp(3.8rem,7.5vw,7.5rem);font-weight:400;letter-spacing:0.01em;line-height:0.9;opacity:0;animation:fadeUp 0.9s 0.32s forwards;}
+
+.meta-strip{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0 6rem;opacity:0;animation:fadeUp 0.7s 0.5s forwards;}
+.meta-item{flex:1;padding:1.5rem 2rem;border-right:1px solid var(--border);}
+.meta-item:last-child{border-right:none;}
+.meta-label{font-size:0.62rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem;}
+.meta-value{font-size:0.92rem;font-weight:500;color:var(--text-primary);}
+
+.project-content{padding:5rem 6rem 6rem;}
+.content-section{margin-bottom:6rem;}
+.section-label-row{display:flex;align-items:center;gap:1.5rem;margin-bottom:3rem;}
+.section-label{
+  font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text-muted);white-space:nowrap;
+  opacity:0;transform:translateX(-20px);
+  transition:opacity 0.6s,transform 0.6s;
+}
+.section-label.visible{opacity:1;transform:translateX(0);}
+.section-rule{
+  flex:1;height:1px;
+  background:repeating-linear-gradient(90deg,var(--border) 0,var(--border) 5px,transparent 5px,transparent 11px);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.9s 0.2s ease;
+}
+.section-rule.visible{transform:scaleX(1);}
+
+.split-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.split-layout.reverse{direction:rtl;}
+.split-layout.reverse>*{direction:ltr;}
+.content-heading{font-family:'Bebas Neue','Inter',sans-serif;font-size:clamp(2rem,3.4vw,3.2rem);letter-spacing:0.01em;line-height:1.04;margin-bottom:1.5rem;color:var(--text-primary);}
+.content-body{font-size:0.92rem;font-weight:300;color:var(--text-secondary);line-height:1.85;margin-bottom:1.5rem;font-style:normal;}
+.content-body b{color:var(--marquee);font-weight:600;}
+.content-tags{display:flex;gap:0.5rem;flex-wrap:wrap;}
+.content-tag{font-size:0.65rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);padding:0.3rem 0.8rem;border:1px solid var(--border);border-radius:999px;transition:border-color 0.2s,color 0.2s;}
+.content-tag:hover{border-color:var(--marquee);color:var(--marquee);}
+.content-image{width:100%;border-radius:12px;border:1px solid var(--border);box-shadow:0 8px 30px rgba(0,0,0,0.07);max-width:none;background:#f0f0f0;min-height:280px;object-fit:cover;transition:box-shadow 0.4s ease;}
+.content-image:hover{box-shadow:0 14px 44px rgba(192,57,43,0.12);}
+
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:6rem;}
+.stat-cell{background:#fff;padding:2.5rem;display:flex;flex-direction:column;gap:0.5rem;transition:background 0.25s ease;}
+.stat-cell:hover{background:#fcf5f4;}
+.stat-num{font-family:'Bebas Neue','Inter',sans-serif;font-size:clamp(2.4rem,4.6vw,3.6rem);letter-spacing:0.01em;line-height:1;color:var(--marquee);}
+.stat-label{font-size:0.7rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);}
+
+.next-project{margin-top:6rem;padding-top:3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.next-label{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);}
+.next-title{font-family:'Bebas Neue','Inter',sans-serif;font-size:2rem;letter-spacing:0.01em;margin-top:0.5rem;color:var(--text-primary);transition:color 0.2s;}
+.next-link{text-decoration:none;display:block;}
+.next-link:hover .next-title{color:var(--marquee);}
+.next-arrow{font-size:2rem;color:var(--marquee);transition:transform 0.25s;}
+.next-link:hover .next-arrow{transform:translateX(6px);}
+
+footer{position:fixed;bottom:0;left:0;right:0;z-index:50;height:var(--footer-h);padding:0 6rem;background:rgba(250,250,249,0.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.footer-copy{font-size:0.75rem;color:var(--text-muted);letter-spacing:0.02em;}
+.social-icons{display:flex;align-items:center;gap:1.5rem;}
+.social-icons a{display:flex;align-items:center;opacity:0.4;color:var(--text-primary);transition:opacity 0.2s,transform 0.2s,color 0.2s;}
+.social-icons a:hover{opacity:1;transform:translateY(-2px);color:var(--marquee);}
+.social-icon-svg{width:18px;height:18px;}
+
+/* TIMELINE */
+.timeline{position:relative;padding-left:2rem;}
+.timeline::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:1px;background:var(--border);}
+.timeline-point{position:relative;padding-bottom:3rem;padding-left:2.5rem;opacity:0;transform:translateY(20px);transition:opacity 0.55s ease,transform 0.55s ease;}
+.timeline-point:last-child{padding-bottom:0;}
+.timeline-point.visible{opacity:1;transform:translateY(0);}
+.timeline-point::before{content:'';position:absolute;left:-0.35rem;top:5px;width:8px;height:8px;border-radius:50%;background:#fff;border:1.5px solid var(--marquee);transition:background 0.2s,transform 0.2s;z-index:1;}
+.timeline-point:hover::before{background:var(--marquee);transform:scale(1.35);}
+.timeline-date{font-size:0.65rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;}
+.timeline-title{font-size:1rem;font-weight:600;letter-spacing:-0.02em;color:var(--text-primary);margin-bottom:0.5rem;transition:color 0.2s;}
+.timeline-point:hover .timeline-title{color:var(--marquee);}
+.timeline-desc{font-size:0.85rem;font-weight:300;color:var(--text-secondary);line-height:1.75;max-width:520px;}
+.timeline-tag{display:inline-block;margin-top:0.75rem;font-size:0.62rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);padding:0.25rem 0.75rem;border:1px solid var(--border);border-radius:999px;transition:border-color 0.2s,color 0.2s;}
+.timeline-point:hover .timeline-tag{border-color:var(--marquee);color:var(--marquee);}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+@media(max-width:768px){nav,nav.scrolled{padding:1.2rem 1.5rem;}.hero{padding:0 1.5rem 3rem;}.meta-strip{margin:0 1.5rem;flex-wrap:wrap;}.meta-item{min-width:50%;border-right:none;border-bottom:1px solid var(--border);}.project-content{padding:3rem 1.5rem 4rem;}.split-layout{grid-template-columns:1fr;gap:2rem;}.split-layout.reverse{direction:ltr;}.stat-row{grid-template-columns:1fr;}footer{padding:0 1.5rem;}}
+
+/* HORIZONTAL TIMELINE */
+.h-timeline{position:relative;display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:1rem;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.h-timeline::-webkit-scrollbar{display:none;}
+.h-timeline::before{content:'';position:absolute;top:5px;left:4px;right:4px;height:1px;background:var(--border);z-index:0;}
+.h-point{position:relative;flex:1;min-width:200px;padding-top:2.5rem;padding-right:2rem;opacity:0;transform:translateY(16px);transition:opacity 0.55s ease,transform 0.55s ease;cursor:default;}
+.h-point.visible{opacity:1;transform:translateY(0);}
+.h-point::before{content:'';position:absolute;top:0;left:0;width:10px;height:10px;border-radius:50%;background:#fff;border:1.5px solid var(--marquee);transition:background 0.2s,transform 0.2s;z-index:1;}
+.h-point:hover::before{background:var(--marquee);transform:scale(1.4);}
+.h-point::after{content:'';position:absolute;top:9px;left:4px;width:1px;height:1.5rem;background:var(--border);}
+.h-date{font-size:0.63rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;}
+.h-title{font-size:0.92rem;font-weight:600;letter-spacing:-0.02em;color:var(--text-primary);margin-bottom:0.45rem;transition:color 0.2s;line-height:1.3;}
+.h-point:hover .h-title{color:var(--marquee);}
+.h-desc{font-size:0.78rem;font-weight:300;color:var(--text-secondary);line-height:1.7;padding-right:0.5rem;}
+.h-tag{display:inline-block;margin-top:0.75rem;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);padding:0.22rem 0.65rem;border:1px solid var(--border);border-radius:999px;transition:border-color 0.2s,color 0.2s;}
+.h-point:hover .h-tag{border-color:var(--marquee);color:var(--marquee);}
+
+/* CAROUSEL */
+.carousel{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--border);}
+.carousel-track{display:flex;transition:transform 0.5s cubic-bezier(0.25,1,0.5,1);}
+.carousel-slide{min-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg);}
+.carousel-slide img{width:100%;max-height:960px;object-fit:contain;display:block;margin:0;max-width:none;}
+.carousel-caption{width:100%;padding:0.6rem 1rem 0.85rem;font-size:0.72rem;font-weight:400;color:var(--text-muted);letter-spacing:0.02em;text-align:center;border-top:1px solid var(--border);}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(250,250,249,0.92);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text-primary);width:40px;height:40px;border-radius:50%;font-size:0.85rem;cursor:pointer;transition:background 0.2s,transform 0.2s,color 0.2s,border-color 0.2s;display:flex;align-items:center;justify-content:center;z-index:2;}
+.carousel-btn:hover{background:#fff;color:var(--marquee);border-color:var(--marquee);transform:translateY(-50%) scale(1.08);}
+.carousel-btn.prev{left:1rem;}
+.carousel-btn.next{right:1rem;}
+.carousel-btn:disabled{opacity:0.3;cursor:default;}
+.carousel-dots{display:flex;justify-content:center;gap:0.4rem;margin-top:0.85rem;}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(26,26,26,0.2);border:none;cursor:pointer;padding:0;margin:0;transition:background 0.2s,transform 0.2s;}
+.carousel-dot.active{background:var(--marquee);transform:scale(1.25);}
+
+.hero-back {
+  display: flex;   /* was inline-flex */
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.1s forwards;
+  transition: color 0.2s;
+  width: fit-content;   /* keeps hover/click area tight to the text instead of full width */
+}
+
+.hero-eyebrow {
+  display: flex;   /* was inline-flex */
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--marquee);
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.7s 0.2s forwards;
+  width: fit-content;
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+<nav id="mainNav">
+  <a class="nav-brand" href="index.html">Andrew Lee</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="aboutme.html">About</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-name-bg">SOTG</div>
+  <div class="hero-inner">
+    <a href="projects.html" class="hero-back">← Projects</a>
+    <span class="hero-eyebrow">Operations — 01</span>
+    <h1 class="hero-title">Screen on<br>the Green.</h1>
+  </div>
+</section>
+
+<div class="meta-strip">
+  <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">Chief of Staff, Multimedia Commissioner, Multimedia Intern</div></div>
+  <div class="meta-item"><div class="meta-label">Category</div><div class="meta-value">Creative Event Operations</div></div>
+  <div class="meta-item"><div class="meta-label">Frequency</div><div class="meta-value">Semi-Annual</div></div>
+  <div class="meta-item"><div class="meta-label">Year</div><div class="meta-value">2022 – 2025</div></div>
+</div>
+
+<div class="project-content">
+
+  <!-- OVERVIEW -->
+  <div class="content-section">
+    <div class="section-label-row" data-obs><span class="section-label">Overview</span><div class="section-rule"></div></div>
+    <div class="split-layout">
+      <div>
+        <h2 class="content-heading">Outdoor movie screenings that bring campus together.</h2>
+        <p class="content-body">Screen on the Green is a semi-annual outdoor movie screening held at UCI's Aldrich Park. As the Office of Student Service's (SSVP) Multimedia Commissioner, I coordinated all logistics from venue setup and vendor management to audio-visual production and on-site staffing, ensuring a seamless experience for hundreds of attendees.<br><br>
+        Managed all operations: from concept ideation, pre-event planning, vendor communications, to day-of setup, staff shift coordination, and post-event breakdown. Worked cross-functionally with Professional Event, Marketing, and Finance Staff, and campus partners to deliver a polished, reliable event experience.</p>
+        <div class="content-tags">
+          <span class="content-tag">Event Operations</span>
+          <span class="content-tag">Vendor Management</span>
+          <span class="content-tag">Logistics</span>
+          <span class="content-tag">On-Site Production</span>
+        </div>
+      </div>
+      <img src="sotg_Screen.JPG" alt="Screen on the Green Crowd" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stat-row">
+    <div class="stat-cell"><span class="stat-num">$21,600</span><span class="stat-label">Budget</span></div>
+    <div class="stat-cell"><span class="stat-num">600→900+</span><span class="stat-label">Attendance Growth</span></div>
+    <div class="stat-cell"><span class="stat-num">2x</span><span class="stat-label">A Year</span></div>
+  </div>
+
+  <!-- CONTEXT -->
+  <div class="content-section">
+    <div class="section-label-row" data-obs><span class="section-label">Context</span><div class="section-rule"></div></div>
+    <div class="split-layout">
+      <div>
+        <h2 class="content-heading">A campus tradition, innovated.</h2>
+        <p class="content-body">Screen on the Green had run for years as a reliable but plateaued event - solid attendance, but no real growth. As Multimedia Commissioner, I knew I could elevate marketing and programming, not just maintain it: bigger turnout, tighter production, and a $21,600 budget to manage responsibly.</p>
+        <div class="content-tags">
+          <span class="content-tag">Ownership</span>
+          <span class="content-tag">Budget Management</span>
+        </div>
+      </div>
+      <img src="sotg_cutout.JPG" alt="Screen on the Green Setup" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- PROBLEM-SOLVING -->
+  <div class="content-section">
+    <div class="section-label-row" data-obs><span class="section-label">Problem-Solving</span><div class="section-rule"></div></div>
+    <div class="split-layout reverse">
+      <div>
+        <h2 class="content-heading">When the license fell through.</h2>
+        <p class="content-body">With less than a month before the event, our film license for <i>Barbie</i> (2023) fell through. Rather than delay or cancel, I acted fast with my team and quickly pivoted to an alternative while holding the budget and every other logistic, from venue to vendors to staffing, in place.</p>
+        <div class="content-tags">
+          <span class="content-tag">Adaptation</span>
+          <span class="content-tag">Crisis Management</span>
+        </div>
+      </div>
+      <img src="sotg_chelsea.JPG" alt="Screen on the Green Setup" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- GROWTH -->
+  <div class="content-section">
+    <div class="section-label-row" data-obs><span class="section-label">Growth</span><div class="section-rule"></div></div>
+    <div class="split-layout">
+      <div>
+        <h2 class="content-heading">From 600 to 900+.</h2>
+        <p class="content-body">Over my time running planning, attendance grew from roughly 600 to 900+ attendees - the largest audience SOTG has ever seen, which is part of why I was named <b>Commissioner of the Year</b> out of 14 others, being the youngest and only sole commissioner. I also trimmed about $1,200 in expenses through vendor renegotiation and in-house production alternatives, without attendees noticing a drop in quality.</p>
+        <div class="content-tags">
+          <span class="content-tag">Vendor Negotiation</span>
+          <span class="content-tag">Commissioner of the Year</span>
+        </div>
+      </div>
+      <img src="sotg_award.JPG" alt="Screen on the Green Crowd" class="content-image"/>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="content-section">
+    <div class="section-label-row" data-obs><span class="section-label">Event Gallery</span><div class="section-rule"></div></div>
+    <div class="carousel" id="sotgCarousel">
+      <div class="carousel-track" id="sotgTrack">
+        <div class="carousel-slide"><img src="sotg_lawn.JPG" alt="SOTG Crowd"/></div>
+        <div class="carousel-slide"><img src="sotg_crowd.JPG" alt="SOTG Crowd"/></div>
+        <div class="carousel-slide"><img src="sotg_office.JPG" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_popcorn.JPG" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_spiderballoon.jpg" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_program.JPG" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_kim.JPG" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_outfit.JPG" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_trio.JPG" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_spider.png" alt="SOTG Spider"/></div>
+        <div class="carousel-slide"><img src="sotg_8.5flyer.png" alt="SOTG Spider"/></div>
+      </div>
+      <button class="carousel-btn prev" id="sotgPrev" aria-label="Previous">←</button>
+      <button class="carousel-btn next" id="sotgNext" aria-label="Next">→</button>
+    </div>
+    <div class="carousel-dots" id="sotgDots"></div>
+  </div>
+
+</div>
+
+<footer>
+  <span class="footer-copy">© 2026 Andrew Lee</span>
+  <div class="social-icons">
+    <a href="https://www.linkedin.com/in/andrewlee6804/" target="_blank" title="LinkedIn">
+      <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="mailto:lee.andrew6804@gmail.com" title="Email">
+      <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.48.21-.913.54-1.21L12 13.09 23.46 4.247c.33.297.54.73.54 1.21z"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script>
+const progressBar=document.getElementById('scrollProgress');
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>{
+  const sy=window.scrollY;
+  const dh=document.documentElement.scrollHeight-window.innerHeight;
+  progressBar.style.width=(sy/dh*100)+'%';
+  nav.classList.toggle('scrolled',sy>60);
+},{passive:true});
+
+// Section label/rule reveal (matches projects.html pattern)
+document.querySelectorAll('.section-label-row[data-obs]').forEach(row => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelector('.section-label').classList.add('visible');
+        e.target.querySelector('.section-rule').classList.add('visible');
+      }
+    });
+  }, { threshold: 0.3 }).observe(row);
+});
+
+// Timeline reveal
+const tlPts = document.querySelectorAll('.timeline-point');
+const tlObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const i = Array.from(tlPts).indexOf(e.target);
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      tlObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+tlPts.forEach(p => tlObs.observe(p));
+
+// Horizontal timeline reveal
+const hPts = document.querySelectorAll('.h-point');
+const hObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const i = Array.from(hPts).indexOf(e.target);
+      setTimeout(() => e.target.classList.add('visible'), i * 100);
+      hObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.15 });
+hPts.forEach(p => hObs.observe(p));
+
+// Carousel
+(function(){
+  const track  = document.getElementById('sotgTrack');
+  const slides = track.querySelectorAll('.carousel-slide');
+  const prev   = document.getElementById('sotgPrev');
+  const next   = document.getElementById('sotgNext');
+  const dotsEl = document.getElementById('sotgDots');
+  let current  = 0;
+
+  slides.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    current = n;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dotsEl.querySelectorAll('.carousel-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === current));
+    prev.disabled = current === 0;
+    next.disabled = current === slides.length - 1;
+  }
+
+  prev.addEventListener('click', () => goTo(current - 1));
+  next.addEventListener('click', () => goTo(current + 1));
+  goTo(0);
+})();
+</script>
+</body>
+</html>

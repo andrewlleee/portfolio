@@ -1,0 +1,603 @@
+<!-- aboutme.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Andrew Lee">
+  <meta name="description" content="About Andrew Lee">
+  <title>Andrew Lee — About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+  
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #fafaf9;
+      --text-primary: #1a1a1a;
+      --text-secondary: #6b6b6b;
+      --text-muted: #a0a0a0;
+      --border: #e8e8e8;
+      --marquee: #c0392b;
+      --marquee-glow: rgba(192,57,43,0.14);
+      --footer-h: 62px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      padding-bottom: var(--footer-h);
+    }
+    .display { font-family: 'Bebas Neue', 'Inter', sans-serif; letter-spacing: 0.02em; }
+
+    /* SCROLL PROGRESS */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 2px; background: var(--marquee);
+      z-index: 9000; width: 0%;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100; display: flex;
+      align-items: center; justify-content: space-between;
+      padding: 1.8rem 5rem;
+      transition: background 0.4s, padding 0.3s, border-color 0.4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(250,250,249,0.92);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom-color: var(--border); padding: 1.1rem 5rem;
+    }
+    .nav-brand { font-size: 0.95rem; font-weight: 500; letter-spacing: 0.03em; color: var(--text-primary); text-decoration: none; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 400; color: var(--text-secondary);
+      text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--marquee); transition: width 0.25s ease; }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    /* BULB RULE */
+    .bulb-rule { display: flex; align-items: center; gap: 0.55rem; flex: 1; }
+    .bulb-rule .bulb-line {
+      flex: 1; height: 1px;
+      background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 11px);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.9s 0.2s ease;
+    }
+    .bulb-rule .bulb-line.visible { transform: scaleX(1); }
+    .bulb-rule .bulb-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--marquee); opacity: 0.55; flex-shrink: 0; }
+
+    /* HERO */
+    .hero {
+      position: relative; min-height: 60vh;
+      display: flex; align-items: flex-end;
+      overflow: hidden; padding: 0 5rem 5rem;
+    }
+    .hero-name-bg {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(7rem, 16vw, 20rem);
+      font-weight: 400; letter-spacing: 0.01em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(192,57,43,0.06);
+      white-space: nowrap; pointer-events: none; user-select: none;
+      will-change: transform, opacity; z-index: 0;
+    }
+    .hero-inner {
+      position: relative; z-index: 1; width: 100%;
+      max-width: 1400px; margin: 0 auto;
+      display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 4rem;
+    }
+    .hero-text { flex: 1; }
+    .about-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--marquee); margin-bottom: 1rem;
+      opacity: 0; transform: translateY(12px);
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+    .about-eyebrow::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--marquee); box-shadow: 0 0 0 4px var(--marquee-glow);
+    }
+    .about-title {
+      font-family: 'Bebas Neue', 'Inter', sans-serif;
+      font-size: clamp(4.5rem, 9vw, 8.5rem);
+      font-weight: 400; letter-spacing: 0.01em; line-height: 0.88;
+      opacity: 0; transform: translateY(28px);
+      animation: fadeUp 0.9s 0.32s forwards;
+    }
+    .hero-photo-wrap {
+      flex-shrink: 0; position: relative;
+      opacity: 0; animation: fadeIn 1s 0.5s forwards;
+    }
+    .hero-photo-wrap::before {
+      content: '';
+      position: absolute; width: 360px; height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--marquee-glow) 0%, transparent 68%);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .profile-pic-container { position: relative; width: 280px; height: 280px; }
+    .profile-pic {
+      width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.9);
+      display: block;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 20px 60px rgba(0,0,0,0.10), 0 60px 120px rgba(0,0,0,0.07);
+      transition: transform 0.5s ease;
+    }
+    .profile-pic:hover { transform: scale(1.02); }
+
+    /* CONTENT */
+    .about-content {
+      max-width: 1400px; margin: 0 auto;
+      padding: 5rem 5rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .about-panel {
+      padding: 0 3.5rem 0 0;
+      border-right: 1px solid var(--border);
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .about-panel.visible { opacity: 1; transform: translateY(0); }
+    .about-panel:last-child { border-right: none; padding-right: 0; padding-left: 3.5rem; }
+
+    .panel-label {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 1.6rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .panel-label::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--marquee); opacity: 0.55; flex-shrink: 0;
+    }
+    .panel-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 11px);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.8s 0.3s ease;
+    }
+    .about-panel.visible .panel-label::after { transform: scaleX(1); }
+
+    .bio-text p { font-size: 0.9rem; line-height: 1.9; color: var(--text-secondary); font-weight: 300; }
+    .bio-text p + p { margin-top: 1rem; }
+    .bio-text strong { color: var(--text-primary); font-weight: 500; }
+
+    .involvement-list { list-style: none; display: flex; flex-direction: column; }
+    .involvement-item {
+      font-size: 0.85rem; color: var(--text-secondary); font-weight: 300;
+      padding: 0.9rem 0; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      transition: color 0.2s, padding-left 0.2s; cursor: default;
+    }
+    .involvement-item:first-child { border-top: 1px solid var(--border); }
+    .involvement-item:hover { color: var(--text-primary); padding-left: 0.5rem; }
+    .involvement-item .arrow { font-size: 0.75rem; color: var(--marquee); opacity: 0; transition: opacity 0.2s; }
+    .involvement-item:hover .arrow { opacity: 1; }
+
+    .involvement-link,
+    .involvement-link:link,
+    .involvement-link:visited,
+    .involvement-link:hover,
+    .involvement-link:active {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; color: inherit !important; text-decoration: none !important;
+    }
+
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+    .skill-tag {
+      font-size: 0.75rem; font-weight: 400; color: var(--text-secondary);
+      padding: 0.4rem 0.9rem; border: 1px solid var(--border);
+      border-radius: 999px; letter-spacing: 0.02em;
+      opacity: 0; transform: scale(0.9);
+      transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s, color 0.2s;
+      cursor: default;
+    }
+    .skill-tag.visible { opacity: 1; transform: scale(1); }
+    .skill-tag:hover { border-color: var(--marquee); color: var(--marquee); }
+
+    /* FIXED FOOTER */
+    footer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 50; height: var(--footer-h); padding: 0 5rem;
+      background: rgba(250,250,249,0.94);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.02em; }
+    .social-icons { display: flex; align-items: center; gap: 1.5rem; }
+    .social-icons a { display: flex; align-items: center; opacity: 0.4; color: var(--text-primary); transition: opacity 0.2s, transform 0.2s; }
+    .social-icons a:hover { opacity: 1; transform: translateY(-2px); color: var(--marquee); }
+    .social-icon-svg { width: 18px; height: 18px; }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    @media (max-width: 1024px) {
+      .about-content { grid-template-columns: 1fr; gap: 3rem; }
+      .about-panel, .about-panel:nth-child(2), .about-panel:last-child {
+        border-right: none; border-bottom: 1px solid var(--border);
+        padding: 0 0 3rem 0;
+      }
+      .about-panel:last-child { border-bottom: none; padding-bottom: 0; }
+    }
+    @media (max-width: 768px) {
+      nav, nav.scrolled { padding: 1.2rem 1.5rem; }
+      .hero { padding: 0 1.5rem 3rem; min-height: 50vh; }
+      .hero-inner { flex-direction: column; align-items: flex-start; gap: 2rem; }
+      .profile-pic-container { width: 110px; height: 110px; }
+      .hero-photo-wrap::before { display: none; }
+      .about-content { padding: 3rem 1.5rem 4rem; }
+      footer { padding: 0 1.5rem; }
+    }
+
+    /* ── EXPERIENCE ── */
+    .journey-section{max-width:1400px;margin:0 auto;padding:0 5rem 6rem;opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+    .journey-section.visible{opacity:1;transform:translateY(0);}
+    .journey-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem;}
+    .journey-label{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;}
+    .journey-rule{flex:1;height:1px;background:var(--border);transform:scaleX(0);transform-origin:left;transition:transform 0.9s 0.2s ease;}
+    .journey-rule.visible{transform:scaleX(1);}
+    .exp-timeline{display:grid;grid-template-columns:repeat(3,1fr);position:relative;}
+    .exp-timeline::before{content:'';position:absolute;top:5px;left:0;right:0;height:1px;background:var(--border);}
+    .exp-point{position:relative;padding-top:2.5rem;padding-right:3rem;opacity:0;transform:translateY(20px);transition:opacity 0.55s ease,transform 0.55s ease;}
+    .exp-point:last-child{padding-right:0;}
+    .exp-point.visible{opacity:1;transform:translateY(0);}
+    .exp-point::before{content:'';position:absolute;top:0;left:0;width:10px;height:10px;border-radius:50%;background:#fff;border:1.5px solid var(--text-primary);transition:background 0.2s,transform 0.2s,border-color 0.2s;z-index:1;}
+    .exp-point:hover::before{background:var(--marquee);border-color:var(--marquee);transform:scale(1.4);}
+    .exp-point::after{content:'';position:absolute;top:9px;left:4px;width:1px;height:1.5rem;background:var(--border);}
+    .exp-year{font-size:0.63rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.5rem;}
+    .exp-role{font-family:'Bebas Neue','Inter',sans-serif;font-size:1.4rem;letter-spacing:0.01em;color:var(--text-primary);margin-bottom:0.25rem;line-height:1.15;transition:color 0.2s;}
+    .exp-point:hover .exp-role{color:var(--marquee);}
+    .exp-org{font-size:0.75rem;font-weight:400;color:var(--text-muted);margin-bottom:0.85rem;}
+    .exp-desc{font-size:0.85rem;font-weight:300;color:var(--text-secondary);line-height:1.75;}
+    .exp-tag{display:inline-block;margin-top:0.85rem;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);padding:0.22rem 0.7rem;border:1px solid var(--border);border-radius:999px;transition:border-color 0.2s,color 0.2s;}
+    .exp-point:hover .exp-tag{border-color:var(--marquee);color:var(--marquee);}
+    @media(max-width:1024px){.journey-section{padding:0 5rem 5rem;}.exp-timeline{grid-template-columns:1fr;gap:3rem;}.exp-timeline::before{display:none;}.exp-point{padding-right:0;padding-top:0;padding-left:1.5rem;}.exp-point::before{top:0;}.exp-point::after{top:4px;height:1.2rem;}}
+    @media(max-width:768px){.journey-section{padding:0 1.5rem 4rem;}}
+
+    /* ── INVOLVEMENT SECTION ── */
+    .inv-section{max-width:1400px;margin:0 auto;padding:0 5rem 6rem;}
+    .inv-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:2.5rem;}
+    .inv-header-label{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;}
+    .inv-header-rule{flex:1;height:1px;background:repeating-linear-gradient(90deg, var(--border) 0, var(--border) 5px, transparent 5px, transparent 11px);}
+    .inv-panel{display:grid;grid-template-columns:1fr 1.8fr;gap:3rem;align-items:start;}
+    .inv-list{display:flex;flex-direction:column;}
+    .inv-list-item{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid var(--border);cursor:pointer;position:relative;transition:padding-left 0.2s;}
+    .inv-list-item:first-child{border-top:1px solid var(--border);}
+    .inv-list-item::before{content:'';position:absolute;left:-1px;top:0;bottom:0;width:1.5px;background:var(--marquee);transform:scaleY(0);transition:transform 0.25s ease;transform-origin:top;}
+    .inv-list-item.active::before{transform:scaleY(1);}
+    .inv-list-item.active{padding-left:0.75rem;}
+    .inv-list-item:not(.active):hover{padding-left:0.5rem;}
+    .inv-list-item:not(.active):hover::before{transform:scaleY(1);opacity:0.2;}
+    .inv-name{font-size:0.78rem;font-weight:400;color:var(--text-secondary);line-height:1.3;transition:color 0.2s;}
+    .inv-list-item.active .inv-name{font-weight:500;color:var(--text-primary);}
+    .inv-list-item:not(.active):hover .inv-name{color:var(--text-primary);}
+    .inv-abbr{font-size:0.58rem;font-weight:400;color:var(--text-muted);letter-spacing:0.06em;margin-top:0.1rem;}
+    .inv-chevron{font-size:0.65rem;color:var(--text-muted);opacity:0;transition:opacity 0.2s,transform 0.2s,color 0.2s;}
+    .inv-list-item.active .inv-chevron{opacity:1;transform:translateX(2px);color:var(--marquee);}
+    .inv-list-item:not(.active):hover .inv-chevron{opacity:0.4;}
+    .inv-detail{position:relative;background:#fff;border:1px solid var(--border);border-radius:12px;min-height:380px;overflow:hidden;}
+    .inv-detail-inner{position:absolute;inset:0;padding:2rem 2.2rem;opacity:0;transform:translateX(18px);transition:opacity 0.35s ease,transform 0.35s ease;pointer-events:none;overflow-y:auto;}
+    .inv-detail-inner.active{opacity:1;transform:translateX(0);pointer-events:auto;}
+    .inv-detail-inner.exit{opacity:0;transform:translateX(-18px);}
+    .detail-org{font-size:0.58rem;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;color:var(--marquee);margin-bottom:0.5rem;}
+    .detail-role{font-family:'Bebas Neue','Inter',sans-serif;font-size:1.8rem;letter-spacing:0.01em;line-height:1.05;color:var(--text-primary);margin-bottom:1.3rem;}
+    .detail-divider{height:1px;background:var(--border);margin-bottom:1.3rem;}
+    .detail-body{font-size:0.8rem;font-weight:300;color:var(--text-secondary);line-height:1.8;margin-bottom:1.3rem;}
+    .detail-timeline{display:flex;flex-direction:column;}
+    .dt-row{display:flex;align-items:flex-start;gap:1rem;padding:0.8rem 0;border-top:1px solid var(--border);}
+    .dt-row:last-child{border-bottom:1px solid var(--border);}
+    .dt-dot{width:7px;height:7px;border-radius:50%;background:#fff;border:1.5px solid var(--marquee);flex-shrink:0;margin-top:4px;}
+    .dt-year{font-size:0.58rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);width:4.5rem;flex-shrink:0;padding-top:2px;}
+    .dt-title{font-size:0.78rem;font-weight:600;color:var(--text-primary);margin-bottom:0.2rem;}
+    .dt-desc{font-size:0.72rem;font-weight:300;color:var(--text-secondary);line-height:1.65;}
+    .detail-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1.3rem;}
+    .detail-tag{font-size:0.58rem;font-weight:500;letter-spacing:0.09em;text-transform:uppercase;color:var(--text-muted);padding:0.2rem 0.65rem;border:1px solid var(--border);border-radius:999px;}
+    @media(max-width:1024px){.inv-section{padding:0 5rem 5rem;}.inv-panel{grid-template-columns:1fr;}}
+    @media(max-width:768px){.inv-section{padding:0 1.5rem 4rem;}}
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <nav id="mainNav">
+    <a class="nav-brand" href="index.html">Andrew Lee</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="aboutme.html" class="active">About</a></li>
+      <li><a href="projects.html">Projects</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-name-bg" id="heroNameBg">ABOUT</div>
+    <div class="hero-inner">
+      <div class="hero-text">
+        <span class="about-eyebrow">Who I Am</span>
+        <h1 class="about-title">Andrew<br>Lee.</h1>
+      </div>
+      <div class="hero-photo-wrap">
+        <div class="profile-pic-container" id="profilePicContainer">
+          <img src="andrewleepfp.jpg" alt="Andrew Lee" class="profile-pic">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="about-content">
+    <div class="about-panel" id="panel1">
+      <p class="panel-label">About</p>
+      <div class="bio-text">
+        <p>I'm a graduate from UC Irvine, with a dual-degree in Business Administration and Informatics.</p>
+        <p>When I'm not building or designing, you'll find me exploring Southern California, attending concerts, or creating content.</p>
+      </div>
+    </div>
+    <div class="about-panel" id="panel3">
+      <p class="panel-label">Skills &amp; Interests</p>
+      <div class="skills-grid" id="skillsGrid">
+        <span class="skill-tag" data-delay="0">Business Strategy</span>
+        <span class="skill-tag" data-delay="60">Marketing</span>
+        <span class="skill-tag" data-delay="120">Project Management</span>
+        <span class="skill-tag" data-delay="180">Graphic Design</span>
+        <span class="skill-tag" data-delay="240">Data Analysis</span>
+        <span class="skill-tag" data-delay="300">UI / UX Design</span>
+        <span class="skill-tag" data-delay="360">Business Operations</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="journey-section" id="journeySection">
+    <div class="journey-header">
+      <span class="journey-label">Recent Experience</span>
+      <div class="journey-rule" id="journeyRule"></div>
+    </div>
+    <div class="exp-timeline">
+      <div class="exp-point">
+        <div class="exp-year">Jun–Aug 2025</div>
+        <div class="exp-role display">Operations &amp; Area Manager Intern</div>
+        <div class="exp-org">Amazon</div>
+        <p class="exp-desc">Led an 8-week floor-to-data process improvement project across Manual Palletize, Robotics, and Outbound Dock at SBD1.</p>
+        <span class="exp-tag">Process Improvement</span>
+      </div>
+      <div class="exp-point">
+        <div class="exp-year">2024–2025</div>
+        <div class="exp-role display">Chief of Staff</div>
+        <div class="exp-org">ASUCI, Office of Student Services</div>
+        <p class="exp-desc">Oversaw a $780K+ departmental budget and concurrent execution of UCI's largest Welcome Week programming.</p>
+        <span class="exp-tag">Event Operations</span>
+      </div>
+      <div class="exp-point">
+        <div class="exp-year">2023–2024</div>
+        <div class="exp-role display">Multimedia Commissioner</div>
+        <div class="exp-org">ASUCI, Office of Student Services</div>
+        <p class="exp-desc">Grew Screen on the Green from 600 to 900+ attendees as sole commissioner; named Commissioner of the Year.</p>
+        <span class="exp-tag">Commissioner of the Year</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="inv-section" id="invSection">
+    <div class="inv-header">
+      <span class="inv-header-label">Involvement</span>
+      <div class="inv-header-rule"></div>
+    </div>
+    <div class="inv-panel">
+
+      <!-- LEFT LIST -->
+      <div class="inv-list">
+        <div class="inv-list-item active" data-org="asuci">
+          <div><div class="inv-name">Associated Students of UCI</div><div class="inv-abbr">ASUCI</div></div>
+          <span class="inv-chevron">→</span>
+        </div>
+        <div class="inv-list-item" data-org="maiss">
+          <div><div class="inv-name">Management Information Student Society</div><div class="inv-abbr">MAISS</div></div>
+          <span class="inv-chevron">→</span>
+        </div>
+        <div class="inv-list-item" data-org="musa">
+          <div><div class="inv-name">Merage Undergraduate Student Association</div><div class="inv-abbr">MUSA</div></div>
+          <span class="inv-chevron">→</span>
+        </div>
+        <div class="inv-list-item" data-org="spop">
+          <div><div class="inv-name">Student Parent Orientation Program</div><div class="inv-abbr">SPOP</div></div>
+          <span class="inv-chevron">→</span>
+        </div>
+      </div>
+
+      <!-- RIGHT DETAIL -->
+      <div class="inv-detail">
+
+        <!-- ASUCI — default open -->
+        <div class="inv-detail-inner active" data-detail="asuci">
+          <div class="detail-org">Associated Students of UC Irvine</div>
+          <div class="detail-role">Event Operations
+          <div class="detail-divider"></div>
+          <p class="detail-body">Grew from a first-year intern to Chief of Staff — one of the most formative progressions of my time at UCI. Each role built directly on the last, moving from learning the craft, to owning it, to overseeing it.</p>
+          <div class="detail-timeline">
+            <div class="dt-row">
+              <div class="dt-dot"></div>
+              <div class="dt-year">2022–23</div>
+              <div><div class="dt-title">Multimedia Intern</div><div class="dt-desc">Assisted senior commissioners in event production, execution, and everything in-between for several ASUCI events.</div></div>
+            </div>
+            <div class="dt-row">
+              <div class="dt-dot"></div>
+              <div class="dt-year">2023–24</div>
+              <div><div class="dt-title">Multimedia Commissioner</div><div class="dt-desc">Owned the full production pipeline independently — from pre-event logistics and vendor coordination to day-of execution.</div></div>
+            </div>
+            <div class="dt-row">
+              <div class="dt-dot"></div>
+              <div class="dt-year">2024–25</div>
+              <div><div class="dt-title">Chief of Staff</div><div class="dt-desc">Shifted to mentoring and overseeing incoming commissioners, leading new event leaders to success and building an inclusive office community.</div></div>
+            </div>
+          </div>
+          <div class="detail-tags"><span class="detail-tag">Event Production</span><span class="detail-tag">Leadership</span><span class="detail-tag">Mentorship</span><span class="detail-tag">A/V</span></div>
+        </div>
+
+        <!-- MAISS -->
+        <div class="inv-detail-inner" data-detail="maiss">
+          <div class="detail-org">Management Information Student Society</div>
+          <div class="detail-role">Marketing
+          <div class="detail-divider"></div>
+          <p class="detail-body">Led a complete rebrand of MAISS's visual identity and ran end-to-end marketing campaigns for multiple events. Grew social engagement and drove record attendance of 300+ across flagship events.</p>
+          <div class="detail-timeline">
+            <div class="dt-row">
+              <div class="dt-dot"></div>
+              <div class="dt-year">2025</div>
+              <div><div class="dt-title">Brand Refresh</div><div class="dt-desc">Redesigned the full MAISS visual identity — palette, typography, and graphic language — from the ground up.</div></div>
+            </div>
+            <div class="dt-row">
+              <div class="dt-dot"></div>
+              <div class="dt-year">2025–26</div>
+              <div><div class="dt-title">Event Campaigns</div><div class="dt-desc">Ran campaigns for Kickoff, FAANG Focus, Mentorship, and AIF — coordinating content, design, and outreach.</div></div>
+            </div>
+          </div>
+          <div class="detail-tags"><span class="detail-tag">Branding</span><span class="detail-tag">Social Media</span><span class="detail-tag">Event Marketing</span><span class="detail-tag">Content</span></div>
+        </div>
+
+        <!-- MUSA -->
+        <div class="inv-detail-inner" data-detail="musa">
+          <div class="detail-org">Merage Undergraduate Student Association</div>
+          <div class="detail-role">Add Your Role</div>
+          <div class="detail-divider"></div>
+          <p class="detail-body">Add your description of your experience and impact within MUSA here.</p>
+          <div class="detail-tags"><span class="detail-tag">Add Tag</span></div>
+        </div>
+
+        <!-- SPOP -->
+        <div class="inv-detail-inner" data-detail="spop">
+          <div class="detail-org">Student Parent Orientation Program</div>
+          <div class="detail-role">Add Your Role</div>
+          <div class="detail-divider"></div>
+          <p class="detail-body">Add your description of your experience and impact within SPOP here.</p>
+          <div class="detail-tags"><span class="detail-tag">Add Tag</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-copy">© 2026 Andrew Lee</span>
+    <div class="social-icons">
+      <a href="https://www.linkedin.com/in/andrewlee6804/" target="_blank" title="LinkedIn">
+        <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+      </a>
+      <a href="mailto:lee.andrew6804@gmail.com" title="Email">
+        <svg class="social-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.48.21-.913.54-1.21L12 13.09 23.46 4.247c.33.297.54.73.54 1.21z"/>
+        </svg>
+      </a>
+    </div>
+  </footer>
+
+  <script>
+    const progressBar = document.getElementById('scrollProgress');
+    const nav = document.getElementById('mainNav');
+    const heroBg = document.getElementById('heroNameBg');
+    const heroSection = document.getElementById('hero');
+
+    window.addEventListener('scroll', () => {
+      const sy = window.scrollY;
+      const dh = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = (sy / dh * 100) + '%';
+      nav.classList.toggle('scrolled', sy > 60);
+      const heroH = heroSection.offsetHeight;
+      const p = Math.min(sy / heroH, 1);
+      heroBg.style.transform = `translate(-50%, -50%) scale(${1 + p * 4})`;
+      heroBg.style.opacity = String(Math.max(0, 0.05 - p * 0.05));
+    }, { passive: true });
+
+    const panelObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); panelObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    ['panel1','panel3'].forEach((id, i) => {
+      const el = document.getElementById(id);
+      el.style.transitionDelay = (i * 0.15) + 's';
+      panelObs.observe(el);
+    });
+
+    const skillObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.querySelectorAll('.skill-tag').forEach(tag => {
+            setTimeout(() => tag.classList.add('visible'), parseInt(tag.dataset.delay) || 0);
+          });
+          skillObs.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    skillObs.observe(document.getElementById('skillsGrid'));
+
+    // Experience section reveal
+    const journeySection = document.getElementById('journeySection');
+    const journeyRule = document.getElementById('journeyRule');
+    const expPoints = document.querySelectorAll('.exp-point');
+    const journeyObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          journeySection.classList.add('visible');
+          journeyRule.classList.add('visible');
+          expPoints.forEach((pt, i) => {
+            setTimeout(() => pt.classList.add('visible'), i * 130);
+          });
+          journeyObs.disconnect();
+        }
+      });
+    }, { threshold: 0.15 });
+    journeyObs.observe(journeySection);
+
+    const picWrap = document.getElementById('profilePicContainer');
+    picWrap.addEventListener('mousemove', e => {
+      const r = picWrap.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) / r.width * 18;
+      const dy = (e.clientY - (r.top + r.height / 2)) / r.height * 18;
+      picWrap.style.transition = 'transform 0.1s ease';
+      picWrap.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+    picWrap.addEventListener('mouseleave', () => {
+      picWrap.style.transition = 'transform 0.6s ease';
+      picWrap.style.transform = 'translate(0,0)';
+    });
+
+    // Involvement tab switching
+    const invItems = document.querySelectorAll('.inv-list-item');
+    const invDetails = document.querySelectorAll('.inv-detail-inner');
+    invItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const org = item.dataset.org;
+        if (item.classList.contains('active')) return;
+        invItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        invDetails.forEach(d => {
+          if (d.dataset.detail === org) {
+            d.classList.add('active');
+          } else {
+            d.classList.remove('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
