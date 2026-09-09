@@ -1,11 +1,10 @@
-<!-- index.html -->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Andrew Lee">
-  <meta name="description" content="Andrew Lee — Portfolio">
+  <meta name="description" content="Andrew Lee - Portfolio">
   <title>Andrew Lee</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
@@ -33,14 +32,12 @@
       letter-spacing: 0.02em;
     }
 
-    /* SCROLL PROGRESS */
     .scroll-progress {
       position: fixed; top: 0; left: 0;
       height: 2px; background: var(--marquee);
       z-index: 9000; width: 0%;
     }
 
-    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 100; display: flex;
@@ -64,7 +61,6 @@
     .nav-links a:hover { color: var(--text-primary); }
     .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
-    /* BULB RULE — the signature motif */
     .bulb-rule {
       display: flex; align-items: center; gap: 0.55rem;
       flex: 1;
@@ -82,7 +78,6 @@
       background: var(--marquee); opacity: 0.55; flex-shrink: 0;
     }
 
-    /* HERO */
     .hero {
       position: relative;
       min-height: 100vh;
@@ -131,7 +126,7 @@
     .hero-sub {
       font-size: 1rem; font-weight: 300;
       color: var(--text-secondary); line-height: 1.8;
-      max-width: 430px; margin-bottom: 2.4rem;
+      max-width: 460px; margin-bottom: 2.4rem;
       opacity: 0; transform: translateY(20px);
       animation: fadeUp 0.9s 0.48s forwards;
     }
@@ -157,7 +152,6 @@
     }
     .hero-btn:hover { background: var(--marquee); color: #fff; border-color: var(--marquee); }
 
-    /* PHOTO */
     .hero-photo-wrap {
       flex-shrink: 0; position: relative;
       opacity: 0; animation: fadeIn 1.1s 0.4s forwards;
@@ -195,7 +189,6 @@
         0 60px 120px rgba(0,0,0,0.09);
     }
 
-    /* NOW SHOWING (featured work) */
     .work {
       max-width: 1400px; margin: 0 auto;
       padding: 5rem 5rem 7rem;
@@ -282,7 +275,6 @@
     }
     .lineup-row:hover .lineup-arrow { transform: translateX(2px); opacity: 1; color: var(--marquee); }
 
-    /* FIXED FOOTER */
     footer {
       position: fixed; bottom: 0; left: 0; right: 0;
       z-index: 50; height: var(--footer-h); padding: 0 5rem;
@@ -334,10 +326,10 @@
     </div>
     <div class="hero-inner" id="heroInner">
       <div class="hero-text">
-        <span class="hero-eyebrow">Now Booking — Creative &amp; Business Operations Roles</span>
+        <span class="hero-eyebrow">Building Brands, Growing Communities, Creating Content</span>
         <h1 class="hero-name display">Andrew Lee</h1>
         <p class="hero-sub">
-         Recent UC Irvine grad (Business Administration & Informatics) who thrives behind the scenes. I lead <strong>live events, creative campaigns, and operations</strong> and love every second of it.
+          Recent UC Irvine graduate passionate about clean visuals, authentic branding, and knowing exactly why something resonates. I build brand presence, grow online communities, and create content that gets people to show up, online and in person.
         </p>
         <div class="hero-cta">
           <a class="hero-email" href="mailto:lee.andrew6804@gmail.com">lee.andrew6804@gmail.com</a>
@@ -362,63 +354,63 @@
     </div>
 
     <div class="lineup">
-      <a href="screen-on-the-green.html" class="lineup-row" data-delay="0">
+      <a href="projects.html" class="lineup-row" data-delay="0">
         <span class="lineup-num display">01</span>
         <div class="lineup-main">
-          <div class="lineup-cat">Event Operations</div>
+          <div class="lineup-cat">Brand &amp; Social Growth</div>
+          <div class="lineup-title display">MAISS Rebrand &amp; Social Strategy</div>
+          <p class="lineup-desc">Owned the full Instagram content calendar, caption writing, and brand identity for a student org - posting, scheduling, and tracking performance week to week.</p>
+        </div>
+        <div class="lineup-stat">
+          <div class="lineup-stat-num display">+38%</div>
+          <div class="lineup-stat-label">Followers, 1 Week</div>
+        </div>
+        <span class="lineup-tag">Social Media, Branding</span>
+        <span class="lineup-arrow">→</span>
+      </a>
+
+      <a href="screen-on-the-green.html" class="lineup-row" data-delay="90">
+        <span class="lineup-num display">02</span>
+        <div class="lineup-main">
+          <div class="lineup-cat">Marketing &amp; Event Production</div>
           <div class="lineup-title display">Screen on the Green</div>
-          <p class="lineup-desc">Grew UCI's outdoor movie screening from 600 to 900+ attendees, and pulled off a last-minute film pivot with weeks to spare.</p>
+          <p class="lineup-desc">Grew UCI's outdoor movie screening from 600 to 900+ attendees through full-cycle marketing, and pulled off a last-minute creative pivot with weeks to spare.</p>
         </div>
         <div class="lineup-stat">
           <div class="lineup-stat-num display">900+</div>
           <div class="lineup-stat-label">Attendees</div>
         </div>
-        <span class="lineup-tag">Commissioner of the Year</span>
-        <span class="lineup-arrow">→</span>
-      </a>
-
-      <a class="lineup-row" data-delay="90">
-        <span class="lineup-num display">02</span>
-        <div class="lineup-main">
-          <div class="lineup-cat">Event Operations</div>
-          <div class="lineup-title display">Aldrich Park After Dark</div>
-          <p class="lineup-desc">Oversaw a live concert series featuring San Pacho and JID, run concurrently with Screen on the Green during UCI's busiest week.</p>
-        </div>
-        <div class="lineup-stat">
-          <div class="lineup-stat-num display">$266K</div>
-          <div class="lineup-stat-label">Budget</div>
-        </div>
-        <span class="lineup-tag">Live Concert Series</span>
+        <span class="lineup-tag">Marketing, Content</span>
         <span class="lineup-arrow">→</span>
       </a>
 
       <a class="lineup-row" data-delay="180">
         <span class="lineup-num display">03</span>
         <div class="lineup-main">
-          <div class="lineup-cat">Brand &amp; Social Growth</div>
-          <div class="lineup-title display">MAISS Rebrand &amp; Growth</div>
-          <p class="lineup-desc">Rebuilt a student org's visual identity into a repeatable content system — driving real, measurable audience growth.</p>
+          <div class="lineup-cat">Live Events</div>
+          <div class="lineup-title display">Aldrich Park After Dark</div>
+          <p class="lineup-desc">Directly oversaw a live concert series featuring San Pacho and JID - managing commissioners, interns, and a six-figure budget in-house.</p>
         </div>
         <div class="lineup-stat">
-          <div class="lineup-stat-num display">+38%</div>
-          <div class="lineup-stat-label">Followers, 1 Week</div>
+          <div class="lineup-stat-num display">$266K</div>
+          <div class="lineup-stat-label">Budget</div>
         </div>
-        <span class="lineup-tag">Brand Strategy</span>
+        <span class="lineup-tag">Event Production</span>
         <span class="lineup-arrow">→</span>
       </a>
 
       <a href="amazon-ops.html" class="lineup-row" data-delay="270">
         <span class="lineup-num display">04</span>
         <div class="lineup-main">
-          <div class="lineup-cat">Process Improvement</div>
+          <div class="lineup-cat">Research &amp; Process Improvement</div>
           <div class="lineup-title display">Amazon Operations</div>
-          <p class="lineup-desc">Led an 8-week floor-to-data process improvement project across three connected departments at an Amazon fulfillment facility.</p>
+          <p class="lineup-desc">Led process improvement initiatives across Robotics and Manual departments, boosting operational efficiency through data analysis, associate collaboration, and hands-on redesign.</p>
         </div>
         <div class="lineup-stat">
           <div class="lineup-stat-num display">+19.8%</div>
-          <div class="lineup-stat-label">RWC Rate</div>
+          <div class="lineup-stat-label">Rate Increase</div>
         </div>
-        <span class="lineup-tag">Operations Intern</span>
+        <span class="lineup-tag">Data &amp; Research</span>
         <span class="lineup-arrow">→</span>
       </a>
     </div>
@@ -488,7 +480,6 @@
       picWrap.style.transform = 'translate(0,0)';
     });
 
-    // Marquee bulb frame — ring of dots around hero
     (function(){
       const ns = 'http://www.w3.org/2000/svg';
       const top = document.getElementById('bulbTop');

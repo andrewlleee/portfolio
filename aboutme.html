@@ -1,4 +1,3 @@
-<!-- aboutme.html -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Andrew Lee">
   <meta name="description" content="About Andrew Lee">
-  <title>Andrew Lee — About</title>
+  <title>Andrew Lee - About</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
   
   <style>
@@ -31,14 +30,12 @@
     }
     .display { font-family: 'Bebas Neue', 'Inter', sans-serif; letter-spacing: 0.02em; }
 
-    /* SCROLL PROGRESS */
     .scroll-progress {
       position: fixed; top: 0; left: 0;
       height: 2px; background: var(--marquee);
       z-index: 9000; width: 0%;
     }
 
-    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       z-index: 100; display: flex;
@@ -62,7 +59,6 @@
     .nav-links a:hover { color: var(--text-primary); }
     .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
-    /* BULB RULE */
     .bulb-rule { display: flex; align-items: center; gap: 0.55rem; flex: 1; }
     .bulb-rule .bulb-line {
       flex: 1; height: 1px;
@@ -73,7 +69,6 @@
     .bulb-rule .bulb-line.visible { transform: scaleX(1); }
     .bulb-rule .bulb-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--marquee); opacity: 0.55; flex-shrink: 0; }
 
-    /* HERO */
     .hero {
       position: relative; min-height: 60vh;
       display: flex; align-items: flex-end;
@@ -139,7 +134,6 @@
     }
     .profile-pic:hover { transform: scale(1.02); }
 
-    /* CONTENT */
     .about-content {
       max-width: 1400px; margin: 0 auto;
       padding: 5rem 5rem 6rem;
@@ -211,7 +205,6 @@
     .skill-tag.visible { opacity: 1; transform: scale(1); }
     .skill-tag:hover { border-color: var(--marquee); color: var(--marquee); }
 
-    /* FIXED FOOTER */
     footer {
       position: fixed; bottom: 0; left: 0; right: 0;
       z-index: 50; height: var(--footer-h); padding: 0 5rem;
@@ -247,7 +240,6 @@
       footer { padding: 0 1.5rem; }
     }
 
-    /* ── EXPERIENCE ── */
     .journey-section{max-width:1400px;margin:0 auto;padding:0 5rem 6rem;opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
     .journey-section.visible{opacity:1;transform:translateY(0);}
     .journey-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem;}
@@ -272,7 +264,6 @@
     @media(max-width:1024px){.journey-section{padding:0 5rem 5rem;}.exp-timeline{grid-template-columns:1fr;gap:3rem;}.exp-timeline::before{display:none;}.exp-point{padding-right:0;padding-top:0;padding-left:1.5rem;}.exp-point::before{top:0;}.exp-point::after{top:4px;height:1.2rem;}}
     @media(max-width:768px){.journey-section{padding:0 1.5rem 4rem;}}
 
-    /* ── INVOLVEMENT SECTION ── */
     .inv-section{max-width:1400px;margin:0 auto;padding:0 5rem 6rem;}
     .inv-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:2.5rem;}
     .inv-header-label{font-size:0.68rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);white-space:nowrap;}
@@ -331,7 +322,7 @@
     <div class="hero-name-bg" id="heroNameBg">ABOUT</div>
     <div class="hero-inner">
       <div class="hero-text">
-        <span class="about-eyebrow">Who I Am</span>
+        <span class="about-eyebrow">Creative Marketer &amp; Community Builder</span>
         <h1 class="about-title">Andrew<br>Lee.</h1>
       </div>
       <div class="hero-photo-wrap">
@@ -346,20 +337,24 @@
     <div class="about-panel" id="panel1">
       <p class="panel-label">About</p>
       <div class="bio-text">
-        <p>I'm a graduate from UC Irvine, with a dual-degree in Business Administration and Informatics.</p>
-        <p>When I'm not building or designing, you'll find me exploring Southern California, attending concerts, or creating content.</p>
+        <p>I'm a recent UC Irvine graduate (Business Administration + Informatics) driven by a passion for storytelling, visual design, and community engagement. I love turning ideas into content, campaigns, and conversations that actually connect with people.</p>
+        <p>I've rebuilt brand identities, managed social platforms, and produced content that drives real growth - 50+ graphics, weekly posting cadences, and campaigns that moved the needle on followers and engagement, not just impressions.</p>
+        
       </div>
     </div>
     <div class="about-panel" id="panel3">
       <p class="panel-label">Skills &amp; Interests</p>
       <div class="skills-grid" id="skillsGrid">
-        <span class="skill-tag" data-delay="0">Business Strategy</span>
-        <span class="skill-tag" data-delay="60">Marketing</span>
-        <span class="skill-tag" data-delay="120">Project Management</span>
+        <span class="skill-tag" data-delay="0">Social Media Strategy</span>
+        <span class="skill-tag" data-delay="60">Content Creation</span>
+        <span class="skill-tag" data-delay="60">Community Management</span>
+        <span class="skill-tag" data-delay="120">Copywriting</span>
+        <span class="skill-tag" data-delay="120">Brand Identity</span>
         <span class="skill-tag" data-delay="180">Graphic Design</span>
-        <span class="skill-tag" data-delay="240">Data Analysis</span>
-        <span class="skill-tag" data-delay="300">UI / UX Design</span>
-        <span class="skill-tag" data-delay="360">Business Operations</span>
+        <span class="skill-tag" data-delay="180">Canva / CapCut</span>
+        <span class="skill-tag" data-delay="240">Analytics &amp; KPIs</span>
+        <span class="skill-tag" data-delay="300">Project Management</span>
+        <span class="skill-tag" data-delay="360">UI / UX Design</span>
       </div>
     </div>
   </div>
@@ -371,25 +366,25 @@
     </div>
     <div class="exp-timeline">
       <div class="exp-point">
+        <div class="exp-year">Mar 2024–Jun 2025</div>
+        <div class="exp-role display">VP of Marketing</div>
+        <div class="exp-org">MAISS, UC Irvine</div>
+        <p class="exp-desc">Owned MAISS's entire social presence - posted and scheduled Instagram content, wrote email newsletters, and ran direct marketing at event booths. Drove 38% follower growth and 90%+ engagement increase.</p>
+        <span class="exp-tag">Social Media, Branding</span>
+      </div>
+      <div class="exp-point">
         <div class="exp-year">Jun–Aug 2025</div>
         <div class="exp-role display">Operations &amp; Area Manager Intern</div>
         <div class="exp-org">Amazon</div>
-        <p class="exp-desc">Led an 8-week floor-to-data process improvement project across Manual Palletize, Robotics, and Outbound Dock at SBD1.</p>
-        <span class="exp-tag">Process Improvement</span>
+        <p class="exp-desc">Spent 8 weeks interviewing frontline associates, spotting friction points invisible from a dashboard, and shipping scrappy fixes - including advocating for a training policy change using data I gathered myself.</p>
+        <span class="exp-tag">Research, Advocacy</span>
       </div>
       <div class="exp-point">
         <div class="exp-year">2024–2025</div>
         <div class="exp-role display">Chief of Staff</div>
         <div class="exp-org">ASUCI, Office of Student Services</div>
-        <p class="exp-desc">Oversaw a $780K+ departmental budget and concurrent execution of UCI's largest Welcome Week programming.</p>
-        <span class="exp-tag">Event Operations</span>
-      </div>
-      <div class="exp-point">
-        <div class="exp-year">2023–2024</div>
-        <div class="exp-role display">Multimedia Commissioner</div>
-        <div class="exp-org">ASUCI, Office of Student Services</div>
-        <p class="exp-desc">Grew Screen on the Green from 600 to 900+ attendees as sole commissioner; named Commissioner of the Year.</p>
-        <span class="exp-tag">Commissioner of the Year</span>
+        <p class="exp-desc">Oversaw a $780K+ departmental budget and directly managed Aldrich Park After Dark, a live concert series featuring San Pacho and JID.</p>
+        <span class="exp-tag">Event Production</span>
       </div>
     </div>
   </section>
@@ -401,92 +396,98 @@
     </div>
     <div class="inv-panel">
 
-      <!-- LEFT LIST -->
       <div class="inv-list">
-        <div class="inv-list-item active" data-org="asuci">
-          <div><div class="inv-name">Associated Students of UCI</div><div class="inv-abbr">ASUCI</div></div>
+        <div class="inv-list-item" data-org="maiss">
+          <div><div class="inv-name">Management Information Student Society</div><div class="inv-abbr">Vice President of Marketing</div></div>
           <span class="inv-chevron">→</span>
         </div>
-        <div class="inv-list-item" data-org="maiss">
-          <div><div class="inv-name">Management Information Student Society</div><div class="inv-abbr">MAISS</div></div>
+        <div class="inv-list-item active" data-org="asuci">
+          <div><div class="inv-name">Associated Students of UC Irvine</div><div class="inv-abbr">Chief of Staff, Multimedia Commissioner, Multimedia Intern</div></div>
+          <span class="inv-chevron">→</span>
+        </div>
+        <div class="inv-list-item" data-org="ACC">
+          <div><div class="inv-name">American Campus Communities</div><div class="inv-abbr">Community Assistant</div></div>
+          <span class="inv-chevron">→</span>
+        </div>
+        <div class="inv-list-item" data-org="ciwm">
+          <div><div class="inv-name">UCI Paul Merage School of Business, Center for Investment & Wealth Management</div><div class="inv-abbr">Marketing and Outreach Intern</div></div>
           <span class="inv-chevron">→</span>
         </div>
         <div class="inv-list-item" data-org="musa">
-          <div><div class="inv-name">Merage Undergraduate Student Association</div><div class="inv-abbr">MUSA</div></div>
+          <div><div class="inv-name">Merage Undergraduate Student Association</div><div class="inv-abbr">Associate</div></div>
           <span class="inv-chevron">→</span>
         </div>
         <div class="inv-list-item" data-org="spop">
-          <div><div class="inv-name">Student Parent Orientation Program</div><div class="inv-abbr">SPOP</div></div>
+          <div><div class="inv-name">Student Parent Orientation Program</div><div class="inv-abbr">Leader</div></div>
           <span class="inv-chevron">→</span>
         </div>
       </div>
 
-      <!-- RIGHT DETAIL -->
       <div class="inv-detail">
 
-        <!-- ASUCI — default open -->
+        <div class="inv-detail-inner" data-detail="maiss">
+          <div class="detail-org">Management Information Student Society</div>
+          <div class="detail-role">VP of Marketing</div>
+          <div class="detail-divider"></div>
+          <p class="detail-body">Owned MAISS's entire social media operation end to end - posted and scheduled Instagram content and stories, wrote and sent email newsletters, and ran in-person direct marketing at event booths. Rebuilt the brand's visual identity (mascot, design system, principles, and guidelines), then used it to drive measurable growth: 38% follower increase in a single week, 90%+ engagement increase, and 80% growth in Mentorship Program applications. Produced 50+ original graphics at a 2–3/week cadence across campaigns for Kickoff, FAANG Focus, Mentorship, and AIF.</p>
+          <div class="detail-tags"><span class="detail-tag">Instagram Management</span><span class="detail-tag">Email Marketing</span><span class="detail-tag">Branding</span><span class="detail-tag">Copywriting</span></div>
+        </div>
+
         <div class="inv-detail-inner active" data-detail="asuci">
           <div class="detail-org">Associated Students of UC Irvine</div>
-          <div class="detail-role">Event Operations
+          <div class="detail-role">Office of Student Services</div>
           <div class="detail-divider"></div>
-          <p class="detail-body">Grew from a first-year intern to Chief of Staff — one of the most formative progressions of my time at UCI. Each role built directly on the last, moving from learning the craft, to owning it, to overseeing it.</p>
+          <p class="detail-body">Grew from a first-year intern to Chief of Staff, building creative and marketing skills at every step. Directed full-cycle marketing for Screen on the Green (600→900+ attendees), then moved into managing a $780K+ budget and directly overseeing events such as Aldrich Park After Dark, a live concert featuring San Pacho and JID - managing two commissioners and four interns through planning and negotiating performance costs within budget.</p>
           <div class="detail-timeline">
             <div class="dt-row">
               <div class="dt-dot"></div>
               <div class="dt-year">2022–23</div>
-              <div><div class="dt-title">Multimedia Intern</div><div class="dt-desc">Assisted senior commissioners in event production, execution, and everything in-between for several ASUCI events.</div></div>
+              <div><div class="dt-title">Multimedia Intern</div><div class="dt-desc">Assisted commissioners in event production, execution, and marketing for Screen on the Green and other ASUCI events.</div></div>
             </div>
             <div class="dt-row">
               <div class="dt-dot"></div>
               <div class="dt-year">2023–24</div>
-              <div><div class="dt-title">Multimedia Commissioner</div><div class="dt-desc">Owned the full production pipeline independently — from pre-event logistics and vendor coordination to day-of execution.</div></div>
+              <div><div class="dt-title">Multimedia Commissioner</div><div class="dt-desc">Owned full production cycles for Screen on the Green - pre-event marketing, logistics, and day-of execution - growing attendance from 600 to 900+. Named Commissioner of the Year.</div></div>
             </div>
             <div class="dt-row">
               <div class="dt-dot"></div>
               <div class="dt-year">2024–25</div>
-              <div><div class="dt-title">Chief of Staff</div><div class="dt-desc">Shifted to mentoring and overseeing incoming commissioners, leading new event leaders to success and building an inclusive office community.</div></div>
+              <div><div class="dt-title">Chief of Staff</div><div class="dt-desc">Managed a $780K+ budget and directly oversaw Aldrich Park After Dark's live concert series, mentoring incoming commissioners along the way.</div></div>
             </div>
           </div>
-          <div class="detail-tags"><span class="detail-tag">Event Production</span><span class="detail-tag">Leadership</span><span class="detail-tag">Mentorship</span><span class="detail-tag">A/V</span></div>
+          <div class="detail-tags"><span class="detail-tag">Marketing</span><span class="detail-tag">Event Production</span><span class="detail-tag">Leadership</span><span class="detail-tag">Mentorship</span></div>
         </div>
 
-        <!-- MAISS -->
-        <div class="inv-detail-inner" data-detail="maiss">
-          <div class="detail-org">Management Information Student Society</div>
-          <div class="detail-role">Marketing
+        <div class="inv-detail-inner" data-detail="ACC">
+          <div class="detail-org">American Campus Communities</div>
+          <div class="detail-role">Community Assistant</div>
           <div class="detail-divider"></div>
-          <p class="detail-body">Led a complete rebrand of MAISS's visual identity and ran end-to-end marketing campaigns for multiple events. Grew social engagement and drove record attendance of 300+ across flagship events.</p>
-          <div class="detail-timeline">
-            <div class="dt-row">
-              <div class="dt-dot"></div>
-              <div class="dt-year">2025</div>
-              <div><div class="dt-title">Brand Refresh</div><div class="dt-desc">Redesigned the full MAISS visual identity — palette, typography, and graphic language — from the ground up.</div></div>
-            </div>
-            <div class="dt-row">
-              <div class="dt-dot"></div>
-              <div class="dt-year">2025–26</div>
-              <div><div class="dt-title">Event Campaigns</div><div class="dt-desc">Ran campaigns for Kickoff, FAANG Focus, Mentorship, and AIF — coordinating content, design, and outreach.</div></div>
-            </div>
-          </div>
-          <div class="detail-tags"><span class="detail-tag">Branding</span><span class="detail-tag">Social Media</span><span class="detail-tag">Event Marketing</span><span class="detail-tag">Content</span></div>
+          <p class="detail-body">Provided daily support to 1,400+ residents - resolving conflicts, service requests, and active emergencies with 99% positive satisfaction feedback. Managed resident databases through Salesforce across millions of data points. Planned and executed 12+ resident engagement events, handling marketing, budgeting, and hosting. Drove a 61% response rate on a company-wide Resident Insights Survey through multi-channel outreach (social media, email, in-person canvassing, door-to-door) - ranking in the top 15% of ACC Community Assistants nationwide.</p>
+          <div class="detail-tags"><span class="detail-tag">Community Management</span><span class="detail-tag">Salesforce</span><span class="detail-tag">Multi-Channel Outreach</span></div>
         </div>
 
-        <!-- MUSA -->
+        <div class="inv-detail-inner" data-detail="ciwm">
+          <div class="detail-org">Center for Investment &amp; Wealth Management</div>
+          <div class="detail-role">Marketing and Outreach Intern</div>
+          <div class="detail-divider"></div>
+          <p class="detail-body">Designed 45+ graphics within an established brand kit and rebranded the LIFEvest Financial Literacy Program with a new mascot logo, icons, and sticker packs. Promoted financial literacy programs to 10+ local high schools, and built a data-driven impact report using demographic and geographic data that directly contributed to expanding the program to a new university.</p>
+          <div class="detail-tags"><span class="detail-tag">Graphic Design</span><span class="detail-tag">Data Analysis</span><span class="detail-tag">Outreach</span></div>
+        </div>
+
         <div class="inv-detail-inner" data-detail="musa">
           <div class="detail-org">Merage Undergraduate Student Association</div>
-          <div class="detail-role">Add Your Role</div>
+          <div class="detail-role">Associate</div>
           <div class="detail-divider"></div>
-          <p class="detail-body">Add your description of your experience and impact within MUSA here.</p>
-          <div class="detail-tags"><span class="detail-tag">Add Tag</span></div>
+          <p class="detail-body">Collaborated with 5 other Associates to organize the annual UCI Business Conference - strategically revamping the conference structure, recruiting 12+ industry professionals for four speaker panels, and securing $3,300+ in student programming funding. Reached 185 total in-person attendees. Also mentored 4 freshman Business major representatives over a two-quarter period, guiding professional development and career growth.</p>
+          <div class="detail-tags"><span class="detail-tag">Event Planning</span><span class="detail-tag">Mentorship</span><span class="detail-tag">Fundraising</span></div>
         </div>
 
-        <!-- SPOP -->
         <div class="inv-detail-inner" data-detail="spop">
           <div class="detail-org">Student Parent Orientation Program</div>
-          <div class="detail-role">Add Your Role</div>
+          <div class="detail-role">Leader</div>
           <div class="detail-divider"></div>
-          <p class="detail-body">Add your description of your experience and impact within SPOP here.</p>
-          <div class="detail-tags"><span class="detail-tag">Add Tag</span></div>
+          <p class="detail-body">Facilitated the growth and integration of 6,000 new students into the UCI community, organizing and leading activities and icebreakers that fostered personal and social development. Operated alongside 100+ fellow SPOP leaders and staff to ensure a cohesive, well-organized orientation program.</p>
+          <div class="detail-tags"><span class="detail-tag">Public Speaking</span><span class="detail-tag">Leadership</span></div>
         </div>
 
       </div>
@@ -549,7 +550,6 @@
     }, { threshold: 0.2 });
     skillObs.observe(document.getElementById('skillsGrid'));
 
-    // Experience section reveal
     const journeySection = document.getElementById('journeySection');
     const journeyRule = document.getElementById('journeyRule');
     const expPoints = document.querySelectorAll('.exp-point');
@@ -580,7 +580,6 @@
       picWrap.style.transform = 'translate(0,0)';
     });
 
-    // Involvement tab switching
     const invItems = document.querySelectorAll('.inv-list-item');
     const invDetails = document.querySelectorAll('.inv-detail-inner');
     invItems.forEach(item => {
